@@ -5,3 +5,5 @@
     SampleFlatApiCreate
     CloseSampleFlatApi
     GetSampleFlatApiString
+
+    GetSecurityDescriptorForAppContainerNames

@@ -122,5 +122,67 @@ user is in control. Windows and views created by the app are positioned by the
 OS shell. Its UX is either drawn using XAML or Composition objects or a
 framework that produces XAML or Composition objects.
 
-## I don't see my question here! [Create an issue to ask a question or start a discussion](https://github.com/microsoft/ProjectReunion/issues/new/choose).
+## How will I consume Project Reunion components? How will they be packaged?
+
+Project Reunion components will be available as NuGet packages and Framework packages. 
+Developers can add Nuget packages to their build environments and or reference shared code 
+that will be available as framework packages.
+
+At developer consumption time it's a Nuget package with metadata and the things your 
+languages need to build against it. 
+At runtime, it's a set of DLLs distributed using a framework package. Your app doesn't 
+need to redistribute the DLLs directly - your app would either depend on the framework 
+package specifically (in the case of a packaged app) or would deploy our upcoming 
+ProjectReunion.MSIX that contains the framework package as part of your app's unpackaged 
+installer (similar to how an app carried the VC Runtimes or the DirectX, etc.)
+
+## What is a Framework Package?
+
+Framework packages are ways for apps to share code from a common source, rather than 
+carrying it with themselves. Apps just need to reference the framework package in their 
+manifest.
+A user's device needs only to carry one Project Reunion Framework package and many apps can 
+reference it. Framework packages are updated faster than apps are e.g. When WinUI ships a 
+new version of their framework package all three apps magically get the new version without 
+themselves having to update (or know how to update some shared copy.) 
+This is much better for security & reliability fixes as well.
+
+## How will consuming Project Reunion components impact my app size?
+
+If you are a packaged app? No. If unpackaged, it probably will.
+
+Nuget packages are build-time artifacts. Referencing more NuGets may mean additional work at build 
+time (like generating projections) but that’s all.  At runtime, apps don’t carry the Framework 
+Package content in their own directory. They share common binaries managed by the system.  
+To help alleviate any DLL hell concerns, Framework Packages will not do breaking changes like the 
+old “DLL hell” problem – we’ll be using versioning mechanisms to prevent that. 
+
+## How will Project Reunion impact an application's performance given that the pieces are 
+## further and further away from the OS?
+
+There's likely going to be a performance impact but it depends on the component.
+In some situations, like with MRT Core, there will be improved performance because we will  
+prune some expensive but rarely used functionality.
+Runtime performance will be probably slightly better as the API interface flattening makes calling 
+complex classes cheaper (fewer interface queries.). Memory usage will be slightly better overall 
+as your apps will load code that can be improved and reduced in size over time. For performance 
+at app launch, there'll probably be a net neutral effect.
+
+## Will Project Reunion help with app-compat testing of new Windows versions??
+
+Yes.
+Project Reunion components will work downlevel to at least Windows 10 version 1809 and in future 
+versions of Windows 10. We will evaluate moving the min version over time based on the needs of 
+developers - thinking of it as roughly aligned with Windows enterprise support is likely a good 
+starting point
+
+## What is the deprecation strategy for in-system components?
+
+In-box components will be supported forever in the usual way. We have no plans to deprecate them
+(remove their usability) at this time. We will likely slow down or pause investment in 
+the in-box components while we focus on making the Project Reunion surface complete.
+
+## I don't see my question here! 
+
+[Create an issue to ask a question or start a discussion](https://github.com/microsoft/ProjectReunion/issues/new/choose).
 
