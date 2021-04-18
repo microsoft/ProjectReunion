@@ -20,8 +20,8 @@
     <CurrentLiftedIXPPackageVersion>10.0.20170.1001-200713-1000.rs-onecore-dep-ixp1</CurrentLiftedIXPPackageVersion>
     <CurrentWilPackageVersion>1.0.190716.2</CurrentWilPackageVersion>
     <MuxCustomBuildTasksPackageVersion>1.0.83-winui3</MuxCustomBuildTasksPackageVersion>
-    <DotNetCoreSdkVersion>5.0.103</DotNetCoreSdkVersion>
-    <DotNetCoreRuntimeVersion>5.0.3</DotNetCoreRuntimeVersion>
+    <DotNetCoreSdkVersion>5.0.202</DotNetCoreSdkVersion>
+    <DotNetCoreRuntimeVersion>5.0.5</DotNetCoreRuntimeVersion>
     <DetoursVersion>4.0.1</DetoursVersion>
     <CppWinRTVersion>2.0.191217.1</CppWinRTVersion>
     <MicrosoftSourceLinkAzureReposVersion>1.0.0</MicrosoftSourceLinkAzureReposVersion>

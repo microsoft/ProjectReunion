@@ -8,9 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="1.2.1" />
   </ItemGroup>
-  
+
+  <!-- For consistency across Reunion, explicitly reference .NET 5.0.5 SDK (5.0.202 train for VS 16.9.3) -->
+  <ItemGroup>
+    <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.18362.15" />
+    <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.18362.15" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\src\Microsoft.ApplicationModel.Resources.vcxproj" />
   </ItemGroup>
