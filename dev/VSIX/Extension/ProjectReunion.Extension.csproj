@@ -223,6 +223,7 @@
   <Target Name="GetVSIXVersion" Outputs="$(VSIXVersion)" />
   <Target Name="BeforeBuild">
     <Copy SourceFiles="..\..\..\LICENSE" DestinationFolder="$(MSBuildProjectDirectory)" />
+    <Error Text="Failed to restore one or more content nuget packages" Condition="'@(ContentNugetPackages->Count())' &lt; 5" />
   </Target>
   <Target Name="AfterBuild">
     <PropertyGroup>
