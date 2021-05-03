@@ -361,7 +361,7 @@ unregister itself.
 ```c++
 void CALLBACK OnFileClosed(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    AppInstance::GetCurrent().UnregisterKey(g_fileName);
+    AppInstance::GetCurrent().UnregisterKey();
 }
 ```
 
@@ -411,7 +411,7 @@ namespace Microsoft.Windows.AppLifecycle
         static Windows.Foundation.IVector<AppInstance> GetInstances();
 
         static AppInstance FindOrRegisterForKey(String key);
-        void UnregisterKey(String key);
+        void UnregisterKey();
 
         void RedirectActivationTo(AppActivationArguments args);
 
@@ -442,7 +442,7 @@ is similar to the platform
 except that that implementation is specific to instance redirection, whereas the Reunion design
 allows for the app to register a key for any reason.
 
-**UnregisterKey** unregisters a given key for this instance. The existing platform behavior is
+**UnregisterKey** unregisters the key for this instance. The existing platform behavior is
 specific to instance redirection, and unregistering the key unregisters that instance for
 redirection (and removes it from the platform's collection of registered instances). In the Reunion
 design, unregistering a key simply removes the key for this instance; it does not have any effect on
