@@ -60,32 +60,19 @@
 
   <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.ExpandPayloadDirectories" />
   <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.GetDefaultResourceLanguage" />
-  <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.GetPackageArchitecture" />
   <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.GetSdkFileFullPath" />
   <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.GetSdkPropertyValue" />
   <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.RemovePayloadDuplicates" />
-  <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.RemoveRedundantXamlFilesFromSdkPayload" />
-  <UsingTask AssemblyFile="$(AppxMSBuildTaskAssembly)" TaskName="Microsoft.Build.AppxPackage.ValidateConfiguration" />
 
   <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.ExpandPriContent" />
-  <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.CreatePriConfigXmlForSplitting" />
-  <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.CreatePriConfigXmlForMainPackageFileMap" />
   <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.CreatePriConfigXmlForFullIndex" />
-  <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.CreatePriFilesForPortableLibraries" />
-  <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.GenerateMainPriConfigurationFile" />
   <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.GeneratePriConfigurationFiles" />
   <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.GenerateProjectPriFile" />
   <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.RemoveDuplicatePriFiles" />
-  <UsingTask AssemblyFile="$(PriProjTaskAssembly)" TaskName="Microsoft.Build.Packaging.Pri.Tasks.UpdateMainPackageFileMap" />
 
   <!-- Adjust AppxPackage to be true Boolean flag. -->
   <PropertyGroup>
     <AppxPackage Condition="'$(AppxPackage)' != 'true'">false</AppxPackage>
-  </PropertyGroup>
-
-  <!-- Adjust DeployOptionalPackages to be true Boolean flag. -->
-  <PropertyGroup>
-    <DeployOptionalPackages Condition="'$(DeployOptionalPackages)' != 'true'">false</DeployOptionalPackages>
   </PropertyGroup>
 
   <!-- Flags controlling certain features -->
@@ -123,55 +110,20 @@
     <UseSdkBuildToolsPackage Condition="'$(UseSdkBuildToolsPackage)' == '' AND '$(WindowsSDKBuildToolsVersion)' != ''">true</UseSdkBuildToolsPackage>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <NuGetTargetFramework Condition="'$(NuGetTargetFramework)'==''">$(TargetPlatformIdentifierAdjusted),Version=v$(TargetPlatformMinVersion)</NuGetTargetFramework>
-    <RuntimeIdentifiers Condition="'$(RuntimeIdentifiers)'==''">win10-arm;win10-arm-aot;win10-arm64-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <ResolveAssemblyConflicts>true</ResolveAssemblyConflicts>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <AppxPackageDirName Condition="'$(AppxPackageDirName)' == ''">AppPackages</AppxPackageDirName>
-    <AppxPackageDirWasSpecified Condition="'$(AppxPackageDir)' != ''">true</AppxPackageDirWasSpecified>
-    <AppxPackageDirInProjectDir>$(ProjectDir)$(AppxPackageDirName)\</AppxPackageDirInProjectDir>
-
-    <PlatformSpecificBundleArtifactsListDirName Condition="'$(PlatformSpecificBundleArtifactsListDirName)' == ''">BundleArtifacts</PlatformSpecificBundleArtifactsListDirName>
-    <PlatformSpecificBundleArtifactsListDirWasSpecified Condition="'$(PlatformSpecificBundleArtifactsListDir)' != ''">true</PlatformSpecificBundleArtifactsListDirWasSpecified>
-    <PlatformSpecificBundleArtifactsListDirInProjectDir>$(ProjectDir)$(PlatformSpecificBundleArtifactsListDirName)\</PlatformSpecificBundleArtifactsListDirInProjectDir>
-    <PlatformSpecificUploadBundleArtifactsListDirInProjectDir>$(ProjectDir)$(PlatformSpecificBundleArtifactsListDirName)Upload\</PlatformSpecificUploadBundleArtifactsListDirInProjectDir>
-  </PropertyGroup>
-
   <!-- Various overridable properties. -->
   <PropertyGroup>
-    <AppxPackageDir Condition="'$(AppxPackageDir)' == '' and '$(OutDirWasSpecified)' == 'true'">$(OutDir)$(AppxPackageDirName)\</AppxPackageDir>
-    <AppxPackageDir Condition="'$(AppxPackageDir)' == ''">$(AppxPackageDirInProjectDir)</AppxPackageDir>
     <AppxManifestFileName Condition="'$(AppxManifestFileName)' == ''">AppxManifest.xml</AppxManifestFileName>
     <AppxUploadPackageArtifactsDir Condition="'$(AppxUploadPackageArtifactsDir)' == ''">Upload\</AppxUploadPackageArtifactsDir>
-    <ExternalPackagesDir Condition="'$(ExternalPackagesDir)' == ''">ExternalPackages\</ExternalPackagesDir>
     <!-- AppxValidateStoreManifest isn't defined here, because the default depends on the TargetPlatform/Version -->
     <MakePriExeFullPath Condition="'$(MakePriExeFullPath)' == ''"></MakePriExeFullPath>
     <MakeAppxExeFullPath Condition="'$(MakeAppxExeFullPath)' == ''"></MakeAppxExeFullPath>
-    <SignAppxPackageExeFullPath Condition="'$(SignAppxPackageExeFullPath)' == ''"></SignAppxPackageExeFullPath>
-    <TempCertificateFilePath Condition="$(TempCertificateFilePath) == ''">$(IntermediateOutputPath)StoreKey_Temp.pfx</TempCertificateFilePath>
-    <ResgenToolPath Condition="'$(ResgenToolPath)' == ''">$(TargetFrameworkSDKToolsDirectory)</ResgenToolPath>
-    <PdbCmfx64ExeFullPath Condition="'$(PdbCmfx64ExeFullPath)' == ''">$(AppxMSBuildToolsPath)\x64\mspdbcmf.exe</PdbCmfx64ExeFullPath>
-    <PdbCmfx86ExeFullPath Condition="'$(PdbCmfx86ExeFullPath)' == ''">$(AppxMSBuildToolsPath)\x86\mspdbcmf.exe</PdbCmfx86ExeFullPath>
-    <AppxSymbolIntermediateDir Condition="'$(AppxSymbolIntermediateDir)' == ''">$(IntermediateOutputPath)Symbols</AppxSymbolIntermediateDir>
-    <AppxUploadSymbolIntermediateDir Condition="'$(AppxUploadSymbolIntermediateDir)' == ''">$(IntermediateOutputPath)Upload.Symbols</AppxUploadSymbolIntermediateDir>
     <PriInitialPath Condition="'$(PrependPriInitialPath)' != 'true'"></PriInitialPath>
-    <PriInitialPath Condition="'$(PrependPriInitialPath)' == 'true' and '$(AppxPackage)' == 'true' and '$(PriInitialPath)' == ''"></PriInitialPath>
-    <PriInitialPath Condition="'$(PrependPriInitialPath)' == 'true' and '$(AppxPackage)' != 'true' and '$(PriInitialPath)' == ''">$(TargetName)</PriInitialPath>
-    <ProjectPriFileName Condition="'$(AppxPackage)' == 'true' and '$(ProjectPriFileName)' == ''">resources.pri</ProjectPriFileName>
-    <ProjectPriFileName Condition="'$(AppxPackage)' != 'true' and '$(ProjectPriFileName)' == '' and '$(PriInitialPath)' == ''">$(TargetName).pri</ProjectPriFileName>
-    <ProjectPriFileName Condition="'$(AppxPackage)' != 'true' and '$(ProjectPriFileName)' == '' and '$(PriInitialPath)' != ''">$(PriInitialPath).pri</ProjectPriFileName>
+    <PriInitialPath Condition="'$(PrependPriInitialPath)' == 'true' and '$(PriInitialPath)' == ''">$(TargetName)</PriInitialPath>
+    <ProjectPriFileName Condition="'$(ProjectPriFileName)' == '' and '$(PriInitialPath)' == ''">$(TargetName).pri</ProjectPriFileName>
+    <ProjectPriFileName Condition="'$(ProjectPriFileName)' == '' and '$(PriInitialPath)' != ''">$(PriInitialPath).pri</ProjectPriFileName>
     <ProjectPriFullPath Condition="'$(ProjectPriFullPath)' == ''">$(TargetDir)$(ProjectPriFileName)</ProjectPriFullPath>
-    <ProjectPriUploadFullPath Condition="'$(ProjectPriUploadFullPath)' == ''">$(TargetDir)$(AppxUploadPackageArtifactsDir)$(ProjectPriFileName)</ProjectPriUploadFullPath>
     <LayoutDir Condition="'$(LayoutDir)'==''">$(TargetDir)AppX</LayoutDir>
-    <ManagedWinmdInprocImplementation Condition="'$(ManagedWinmdInprocImplementation)' == ''">CLRHost.dll</ManagedWinmdInprocImplementation>
-    <InstallerFileWritesLogPath Condition="'$(InstallerFileWritesLogPath)' == ''">$(IntermediateOutputPath)_installerinfo.log</InstallerFileWritesLogPath>
-    <PackagingFileWritesLogPath Condition="'$(PackagingFileWritesLogPath)' == ''">$(IntermediateOutputPath)PackagingFileWrites.log</PackagingFileWritesLogPath>
-    <PackagingDirectoryWritesLogPath Condition="'$(PackagingDirectoryWritesLogPath)' == ''">$(IntermediateOutputPath)PackagingDirectoryWrites.log</PackagingDirectoryWritesLogPath>
     <AppxCopyLocalFilesOutputGroupIncludeXmlFiles Condition="'$(AppxCopyLocalFilesOutputGroupIncludeXmlFiles)' != 'true'">false</AppxCopyLocalFilesOutputGroupIncludeXmlFiles>
-    <AppxPriConfigXmlPackagingSnippetPath Condition="'$(AppxPriConfigXmlPackagingSnippetPath)' == ''"></AppxPriConfigXmlPackagingSnippetPath>
     <AppxPriConfigXmlDefaultSnippetPath Condition="'$(AppxPriConfigXmlDefaultSnippetPath)' == ''"></AppxPriConfigXmlDefaultSnippetPath>
     <TargetPlatformSdkRootOverride Condition="'$(TargetPlatformSdkRootOverride)' == ''"></TargetPlatformSdkRootOverride>
     <TargetPlatformResourceVersion Condition="'$(TargetPlatformResourceVersion)' == ''">$(TargetPlatformVersion)</TargetPlatformResourceVersion>
@@ -184,14 +136,9 @@
 
     <AppxBundle Condition="'$(TargetPlatformVersion)' == '8.0'">Never</AppxBundle>
     <AppxBundle Condition="'$(AppxBundle)' == ''">Auto</AppxBundle>
-    <AppxLayoutFolderName Condition="'$(AppxLayoutFolderName)' == ''">PackageLayout</AppxLayoutFolderName>
     <IntermediateUploadOutputPath Condition="'$(IntermediateUploadOutputPath)' == ''">$(IntermediateOutputPath)Upload\</IntermediateUploadOutputPath>
-    <AppxLayoutDir Condition="'$(AppxLayoutDir)' == ''">$(IntermediateOutputPath)$(AppxLayoutFolderName)\</AppxLayoutDir>
     <AppxBundleAutoResourcePackageQualifiers Condition="'$(AppxBundleAutoResourcePackageQualifiers)' == ''">Language|Scale|DXFeatureLevel</AppxBundleAutoResourcePackageQualifiers>
     
-    <PlatformSpecificBundleArtifactsListDir Condition="'$(PlatformSpecificBundleArtifactsListDir)' == '' and '$(OutDirWasSpecified)' == 'true'">$(OutDir)$(PlatformSpecificBundleArtifactsListDirName)\</PlatformSpecificBundleArtifactsListDir>
-    <PlatformSpecificBundleArtifactsListDir Condition="'$(PlatformSpecificBundleArtifactsListDir)' == ''">$(PlatformSpecificBundleArtifactsListDirInProjectDir)</PlatformSpecificBundleArtifactsListDir>
-
     <!-- Continue to honor the UapDefaultAssetScale property for compat reasons.  But going forward advertise the property "AppxDefaultResourceQualifierUAP_{ValueName} as the desired override property. -->
     <UapDefaultAssetScale Condition="'$(UapDefaultAssetScale)' == ''">200</UapDefaultAssetScale>
     <AppxDefaultResourceQualifierUAP_Scale Condition="'$(AppxDefaultResourceQualifierUAP_Scale)' == ''">$(UapDefaultAssetScale)</AppxDefaultResourceQualifierUAP_Scale>
@@ -204,30 +151,12 @@
     <AppxDefaultResourceQualifierUAP_DxFeatureLevel Condition="'$(AppxDefaultResourceQualifierUAP_DxFeatureLevel)' == ''">DX9</AppxDefaultResourceQualifierUAP_DxFeatureLevel>
     <AppxDefaultResourceQualifierUAP_Platform Condition="'$(AppxDefaultResourceQualifierUAP_Platform)' == ''">UAP</AppxDefaultResourceQualifierUAP_Platform>
 
-    <RemoveNonLayoutFiles Condition="'$(RemoveNonLayoutFiles)' == ''">true</RemoveNonLayoutFiles>
     <IncludeLayoutFilesInPackage Condition="'$(IncludeLayoutFilesInPackage)' == ''">false</IncludeLayoutFilesInPackage>
     <AppxSubfolderWithFilesToBeEmbedded Condition="'$(AppxSubfolderWithFilesToBeEmbedded)' == ''">embed</AppxSubfolderWithFilesToBeEmbedded>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AppxDefaultResourceQualifiers_Windows_80>Language={DefaultResourceLanguage}</AppxDefaultResourceQualifiers_Windows_80>
-    <AppxDefaultResourceQualifiers_Windows_81>Language={DefaultResourceLanguage}|Contrast=standard|Scale=100|HomeRegion=001|TargetSize=256|LayoutDirection=LTR|DXFeatureLevel=DX9|Configuration=|AlternateForm=</AppxDefaultResourceQualifiers_Windows_81>
-    <AppxDefaultResourceQualifiers_Windows_Phone>Language={DefaultResourceLanguage}|Contrast=standard|Scale=240|HomeRegion=001|TargetSize=256|LayoutDirection=LTR|DXFeatureLevel=DX9|Theme=Dark|AlternateForm=</AppxDefaultResourceQualifiers_Windows_Phone>
-    <AppxDefaultResourceQualifiers_Windows_82>Language={DefaultResourceLanguage}|Contrast=standard|Scale=100|HomeRegion=001|TargetSize=256|LayoutDirection=LTR|DXFeatureLevel=DX9|Configuration=|AlternateForm=</AppxDefaultResourceQualifiers_Windows_82>
+  <PropertyGroup Condition="'$(AppxDefaultResourceQualifiers)' == ''">
     <AppxDefaultResourceQualifiers_UAP>Language=$(AppxDefaultResourceQualifierUAP_Language)|Contrast=$(AppxDefaultResourceQualifierUAP_Contrast)|Scale=$(AppxDefaultResourceQualifierUAP_Scale)|HomeRegion=$(AppxDefaultResourceQualifierUAP_HomeRegion)|TargetSize=$(AppxDefaultResourceQualifierUAP_TargetSize)|LayoutDirection=$(AppxDefaultResourceQualifierUAP_LayoutDirection)|DXFeatureLevel=$(AppxDefaultResourceQualifierUAP_DxFeatureLevel)|Configuration=$(AppxDefaultResourceQualifierUAP_Configuration)|AlternateForm=$(AppxDefaultResourceQualifierUAP_AlternateForm)|Platform=$(AppxDefaultResourceQualifierUAP_Platform)</AppxDefaultResourceQualifiers_UAP>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(AppxDefaultResourceQualifiers)' == ''">
-    <AppxDefaultResourceQualifiers Condition="'$(TargetPlatformIdentifierAdjusted)' == 'Windows' and '$(TargetPlatformVersion)' == '8.0'">$(AppxDefaultResourceQualifiers_Windows_80)</AppxDefaultResourceQualifiers>
-    <AppxDefaultResourceQualifiers Condition="'$(TargetPlatformIdentifierAdjusted)' == 'Windows' and '$(TargetPlatformVersion)' == '8.1'">$(AppxDefaultResourceQualifiers_Windows_81)</AppxDefaultResourceQualifiers>
-    <AppxDefaultResourceQualifiers Condition="'$(TargetPlatformIdentifierAdjusted)' == 'Windows' and '$(TargetPlatformVersion)' == '8.2'">$(AppxDefaultResourceQualifiers_Windows_82)</AppxDefaultResourceQualifiers>
-    <AppxDefaultResourceQualifiers Condition="'$(TargetPlatformIdentifierAdjusted)' == 'Portable'">$(AppxDefaultResourceQualifiers_Windows_81)</AppxDefaultResourceQualifiers>
-    <AppxDefaultResourceQualifiers Condition="'$(SDKIdentifier)' != ''">$(AppxDefaultResourceQualifiers_UAP)</AppxDefaultResourceQualifiers>
-  </PropertyGroup>
-
-  <!-- If value is still not set, it is a platform yet unknown to us. -->
-  <!-- Default to same value as for latest version of Windows.        -->
-  <PropertyGroup Condition="'$(AppxDefaultResourceQualifiers)' == ''">
     <AppxDefaultResourceQualifiers>$(AppxDefaultResourceQualifiers_UAP)</AppxDefaultResourceQualifiers>
   </PropertyGroup>
 
@@ -248,11 +177,6 @@
     <DisableEmbeddedXbf Condition="'$(Configuration)'!='Debug'">false</DisableEmbeddedXbf>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <UseSubFolderForOutputDirDuringMultiPlatformBuild Condition="'$(UseSubFolderForOutputDirDuringMultiPlatformBuild)' == '' and '$(AppxPackagePipelineVersion)' == '$(UapBuildPipeline)'">true</UseSubFolderForOutputDirDuringMultiPlatformBuild>
-    <UseSubFolderForOutputDirDuringMultiPlatformBuild Condition="'$(UseSubFolderForOutputDirDuringMultiPlatformBuild)' == ''">false</UseSubFolderForOutputDirDuringMultiPlatformBuild>
-  </PropertyGroup>
-
   <ItemGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <AvailableItemName Include="AppxSourceContentGroupMap" />
   </ItemGroup>
@@ -271,20 +195,6 @@
     <_ReverseMapProjectPriDirectory>$([System.IO.Path]::GetDirectoryName('$(ProjectPriFullPath)'))\ReverseMap\</_ReverseMapProjectPriDirectory>
     <_ReverseMapProjectPriFileName>$([System.IO.Path]::GetFileName('$(ProjectPriFullPath)'))</_ReverseMapProjectPriFileName>
     <ProjectPriFullPath>$(_ReverseMapProjectPriDirectory)$(_ReverseMapProjectPriFileName)</ProjectPriFullPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(InsertReverseMap)' == 'true' and '$(AppxPackagePipelineVersion)' == '$(UapBuildPipeline)'">
-    <_ReverseMapProjectPriUploadDirectory>$([System.IO.Path]::GetDirectoryName('$(ProjectPriUploadFullPath)'))\ReverseMap\</_ReverseMapProjectPriUploadDirectory>
-    <_ReverseMapProjectPriUploadFileName>$([System.IO.Path]::GetFileName('$(ProjectPriUploadFullPath)'))</_ReverseMapProjectPriUploadFileName>
-    <ProjectPriUploadFullPath>$(_ReverseMapProjectPriUploadDirectory)$(_ReverseMapProjectPriUploadFileName)</ProjectPriUploadFullPath>
-  </PropertyGroup>
-
-  <!-- This property is used to trigger a perf optimization in the CreatePriFilesForPortableLibraries task. -->
-  <!-- When true we will skip generating an intermediate pri file in certain cases and instead just specify -->
-  <!-- the resource file when generating the project's final pri file.                                      -->
-  <PropertyGroup Condition="'$(SkipIntermediatePriGenerationForResourceFiles)' == ''">
-    <SkipIntermediatePriGenerationForResourceFiles Condition="'$(AppxPackagePipelineVersion)' == '$(UapBuildPipeline)'">true</SkipIntermediatePriGenerationForResourceFiles>
-    <SkipIntermediatePriGenerationForResourceFiles Condition="'$(SkipIntermediatePriGenerationForResourceFiles)' == ''">false</SkipIntermediatePriGenerationForResourceFiles>
   </PropertyGroup>
 
   <Import Project="$(MSBuildProjectDirectory)\Microsoft.AppxPackage.Metadata.Overrides.props" Condition="EXISTS( '$(MSBuildProjectDirectory)\Microsoft.AppxPackage.Metadata.Overrides.props' )"/>
@@ -322,14 +232,6 @@
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch Condition="'$(ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch)' == ''">Error</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
 
-  <!-- ============================================================================================ -->
-  <!-- Overriding Publish target from Microsoft.Common.targets to tie into command-line publishing. -->
-  <!-- ============================================================================================ -->
-
-  <Target Name="Publish"
-          Condition="'$(AppxPackage)' == 'true'"
-          DependsOnTargets="Build;$(PackageAction)" />
-
   <!--
     ***********************************************************************************************
     ***********************************************************************************************
@@ -353,13 +255,6 @@
       <AppxIntermediateExtension Condition="'$(AppxIntermediateExtension)' == ''">.intermediate</AppxIntermediateExtension>
     </PropertyGroup>
 
-  </Target>
-
-  <!-- If the AutoIncrementPackageRevision flag is false, delete the AppxPackageTestDir in order to ensure all files in the folder are up to date. -->
-  <Target Name="_DeleteAppxOutputFolderIfNecessary"
-          Condition="('$(BuildingInsideVisualStudio)' != 'true' or '$(AppxAutoIncrementPackageRevision)' != 'true') and Exists($(AppxPackageTestDir))">
-
-    <RemoveDir Directories="$(AppxPackageTestDir)" />
   </Target>
 
   <!-- Finds SDK tool executables paths. -->
@@ -414,22 +309,6 @@
                         MSBuildExtensionsPath64Exists="$(MSBuildExtensionsPath64Exists)"
                         VsTelemetrySession="$(VsTelemetrySession)">
       <Output TaskParameter="ActualFullFilePath" PropertyName="MakeAppxExeFullPath" />
-    </GetSdkFileFullPath>
-
-    <GetSdkFileFullPath Condition="'$(AppxPackage)' == 'true'"
-                        FileName="signtool.exe"
-                        FullFilePath="$(SignAppxPackageExeFullPath)"
-                        FileArchitecture="$(SignToolArchitecture)"
-                        RequireExeExtension="true"
-                        TargetPlatformSdkRootOverride="$(TargetPlatformSdkRootOverride)"
-                        SDKIdentifier="$(SDKIdentifier)"
-                        SDKVersion="$(SDKVersion)"
-                        TargetPlatformIdentifier="$(TargetPlatformIdentifierAdjusted)"
-                        TargetPlatformMinVersion="$(TargetPlatformMinVersion)"
-                        TargetPlatformVersion="$(TargetPlatformVersion)"
-                        MSBuildExtensionsPath64Exists="$(MSBuildExtensionsPath64Exists)"
-                        VsTelemetrySession="$(VsTelemetrySession)">
-      <Output TaskParameter="ActualFullFilePath" PropertyName="SignAppxPackageExeFullPath" />
     </GetSdkFileFullPath>
 
     <PropertyGroup Condition="'$(AppxPackagingArchitecture)' == ''">
@@ -522,15 +401,12 @@
     <_GenerateProjectPriFileDependsOn>
       $(_GenerateProjectPriFileDependsOn);
       BeforeGenerateProjectPriFile;
-      _GeneratePrisForPortableLibraries;
       _GetPriFilesFromPayload;
       _ComputeInputPriFiles;
       _GenerateProjectPriConfigurationFiles;
       _CalculateInputsForGenerateProjectPriFileCore;
       _GenerateProjectPriFileCore;
       _AddFileReadsAndFileWritesForProjectPri;
-      _CreateProjectPriFileItem;
-      _ExpandProjectPriFile;
       _ExpandPriFiles;
       AfterGenerateProjectPriFile
     </_GenerateProjectPriFileDependsOn>
@@ -560,99 +436,6 @@
 
   <!-- Override to specify actions to happen before generating project PRI file. -->
   <Target Name="BeforeGenerateProjectPriFile" />
-
-  <!-- Generates a PRI file for all managed libraries that contain .resources files   -->
-  <!-- in them (and their satellites).  This allows a .NET Portable Library to be     -->
-  <!-- built with only .resources files, yet still be localized when compiled into    -->
-  <!-- an AppX package where the ResourceManager uses the WinRT resource manager.     -->
-  <Target Name="_GeneratePrisForPortableLibraries"
-          Condition="'$(AppxPackage)' == 'true' and '$(AppxGeneratePrisForPortableLibrariesEnabled)' == 'true'"
-            >
-    <!--
-    Do not rename or delete the item groups _LibrariesUnfiltered and CreatedResWFiles
-
-    In case of compiling Universal app, the item group _LibrariesUnfiltered will get initialized with the filtered list of
-    the app assemblies excluding the framework assemblies.
-    the initialization will occur in the target _GetLibrariesToGeneratePrisForUWPApps in the file Microsoft.Net.CoreRuntime.targets.
-    also _GetLibrariesToGeneratePrisForUWPApps will fill the initial list of CreatedResWFiles.
-    -->
-
-    <ItemGroup Condition="'@(_LibrariesUnfiltered)' == '' and '@(CreatedResWFiles)' == '' and '$(NetCoreGeneratePrisForPortableLibraries)'!='true'">
-      <_LibrariesUnfiltered Include="@(PackagingOutputs)" Condition="'%(Extension)' == '.dll'" />
-    </ItemGroup>
-
-    <RemovePayloadDuplicates Inputs="@(_LibrariesUnfiltered)"
-                             ProjectName="$(ProjectName)"
-                             Platform="$(Platform)"
-                             VsTelemetrySession="$(VsTelemetrySession)">
-      <Output TaskParameter="Filtered" ItemName="_LibrariesFiltered" />
-    </RemovePayloadDuplicates>
-
-    <ItemGroup>
-      <_Libraries Include="@(_LibrariesFiltered)" Condition="'%(_LibrariesFiltered.BaseAssemblyFullPath)' == ''" />
-      <_Libraries Include="@(_LibrariesFiltered)" Condition="'%(_LibrariesFiltered.BaseAssemblyFullPath)' != ''">
-        <OriginalItemSpec>%(_LibrariesFiltered.BaseAssemblyFullPath)</OriginalItemSpec>
-      </_Libraries>
-    </ItemGroup>
-
-    <GenerateResource
-                SdkToolsPath="$(ResgenToolPath)"
-                ExtractResWFiles="true"
-                Sources="@(_Libraries)"
-                UseSourcePath="$(UseSourcePath)"
-                References="@(ReferencePath)"
-                AdditionalInputs="$(MSBuildAllProjects)"
-                NeverLockTypeAssemblies="$(GenerateResourceNeverLockTypeAssemblies)"
-                StateFile="$(IntermediateOutputPath)$(MSBuildProjectFile).GenerateResource.Cache"
-                OutputDirectory="$(IntermediateOutputPath)"
-                ExecuteAsTool="false"
-                MSBuildRuntime="$(GenerateResourceMSBuildRuntime)"
-                MSBuildArchitecture="$(GenerateResourceMSBuildArchitecture)">
-
-      <Output TaskParameter="FilesWritten" ItemName="ExtractedFileWrites"/>
-      <Output TaskParameter="OutputResources" ItemName="CreatedResWFiles" />
-    </GenerateResource>
-
-    <ItemGroup>
-      <FileWrites Include="@(ExtractedFileWrites)" />
-    </ItemGroup>
-
-    <!-- Now generate a PRI file for each set of ResW files (ie, a main assembly + all satellites). -->
-    <!-- Note: The task relies on some metadata set on each ITaskItem, set by GenerateResource.  -->
-
-    <CreatePriFilesForPortableLibraries
-                    MakePriExeFullPath="$(MakePriExeFullPath)"
-                    MakePriExtensionPath="$(OutOfProcessMakePriExtensionPath)"
-                    ContentToIndex="@(CreatedResWFiles)"
-                    IntermediateDirectory="$(IntermediateOutputPath)"
-                    AdditionalMakepriExeParameters="$(AppxCreatePriFilesForPortableLibrariesAdditionalMakepriExeParameters)"
-                    DefaultResourceLanguage="$(DefaultResourceLanguage)"
-                    DefaultResourceQualifiers="$(AppxDefaultResourceQualifiers)"
-                    IntermediateExtension="$(AppxIntermediateExtension)"
-                    TargetPlatformIdentifier="$(TargetPlatformIdentifierAdjusted)"
-                    TargetPlatformVersion="$(TargetPlatformResourceVersion)"
-                    AppxBundleAutoResourcePackageQualifiers="$(AppxBundleAutoResourcePackageQualifiers)"
-                    SkipIntermediatePriGenerationForResourceFiles="$(SkipIntermediatePriGenerationForResourceFiles)"
-                    VsTelemetrySession="$(VsTelemetrySession)"
-                        >
-      <Output TaskParameter="IntermediateFileWrites" ItemName="FileWrites" />
-      <Output TaskParameter="CreatedPriFiles" ItemName="_PortableLibraryCreatedPriFiles" />
-      <Output TaskParameter="UnprocessedReswFiles_DefaultLanguage" ItemName="_UnprocessedReswFiles_DefaultLanguage" />
-      <Output TaskParameter="UnprocessedReswFiles_OtherLanguages" ItemName="_UnprocessedReswFiles_OtherLanguages" />
-    </CreatePriFilesForPortableLibraries>
-
-    <!-- Add all resw files we didn't generate a pri file for to the PRIResource group so they get included during           -->
-    <!-- final pri generation, with the exception of those that need to be indexed using a language other than the project's -->
-    <!-- default.  This group will always be empty if SkipIntermediatePriGenerationForResourceFiles is false.                -->
-    <ItemGroup>
-      <PRIResource Include="@(_UnprocessedReswFiles_DefaultLanguage)" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <FileWrites Include="@(_PortableLibraryCreatedPriFiles)" />
-    </ItemGroup>
-
-  </Target>
 
   <!--
     Get list of PRI files from the payload.
@@ -840,49 +623,6 @@
 
   </Target>
 
-  <!--Create ProjectPriFile item. -->
-  <Target Name="_CreateProjectPriFileItem"
-          Condition="'$(AppxPackage)' == 'true'"
-            >
-
-    <ItemGroup>
-      <ProjectPriFile Remove="@(ProjectPriFile)" />
-      <ProjectPriFile Include="$(ProjectPriFullPath)">
-        <TargetPath>$(ProjectPriFileName)</TargetPath>
-      </ProjectPriFile>
-    </ItemGroup>
-
-    <PropertyGroup Condition="'$(AppxUseResourceIndexerApi)' == ''">
-      <OsVersion>$(registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion@CurrentVersion)</OsVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(AppxUseResourceIndexerApi)' == ''">
-      <AppxUseResourceIndexerApi Condition="'$(OsVersion)' &lt; '6.3'">false</AppxUseResourceIndexerApi>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(AppxUseResourceIndexerApi)' == ''">
-      <AppxUseResourceIndexerApi>true</AppxUseResourceIndexerApi>
-    </PropertyGroup>
-
-  </Target>
-
-  <!-- Expand content of project PRI file. -->
-  <Target Name="_ExpandProjectPriFile"
-          Condition="'$(AppxPackage)' == 'true' and '$(AppxUseResourceIndexerApi)' == 'false'">
-
-    <ExpandPriContent Inputs="@(ProjectPriFile)"
-                      MakePriExeFullPath="$(MakePriExeFullPath)"
-                      MakePriExtensionPath="$(OutOfProcessMakePriExtensionPath)"
-                      IntermediateDirectory="$(IntermediateOutputPath)"
-                      AdditionalMakepriExeParameters="$(AppxExpandPriContentAdditionalMakepriExeParameters)"
-                      VsTelemetrySession="$(VsTelemetrySession)"
-                          >
-      <Output TaskParameter="Expanded" ItemName="IndexedPayloadFiles" />
-      <Output TaskParameter="IntermediateFileWrites" ItemName="FileWrites" />
-    </ExpandPriContent>
-
-  </Target>
-
   <PropertyGroup>
     <GetCopyToOutputDirectoryItemsDependsOn>
       <!-- ResolveProjectReferences has to come before the DependsOn as AssignTargetPath will cause _SplitProjectReferencesByFileExistence to run which will be skipped due
@@ -959,8 +699,6 @@
 
   <!-- Override to specify actions to happen after generating project PRI file. -->
   <Target Name="AfterGenerateProjectPriFile" />
-
-  <!-- END APPXLAYOUT -->
 
   <Target Name="_CalculateXbfSupport">
     <PropertyGroup>
@@ -1296,99 +1034,6 @@
 
   </Target>
 
-  <!-- ========================================== -->
-  <!-- Getting all Optional Project outputs.      -->
-  <!-- Returns items that packaging targets need. -->
-  <!-- ========================================== -->
-
-  <PropertyGroup>
-    <GetOptionalProjectOutputsDependsOn>
-      $(GetOptionalProjectOutputsDependsOn);
-      AssignProjectConfiguration;
-      _SplitProjectReferencesByFileExistence
-    </GetOptionalProjectOutputsDependsOn>
-  </PropertyGroup>
-
-  <Target Name="GetOptionalProjectOutputs"
-          Returns="@(OptionalProjectOutputs)"
-          DependsOnTargets="$(GetOptionalProjectOutputsDependsOn)">
-
-    <CallTarget Targets="OptionalProjectsOutputGroup" Condition="'$(IncludeOptionalProjectsOutputGroup)' == 'true'">
-      <Output TaskParameter="TargetOutputs" ItemName="_OptionalProjectsOutputGroupOutput"/>
-    </CallTarget>
-    <ItemGroup>
-      <_OptionalProjectsOutputs Include="@(_OptionalProjectsOutputGroupOutput)">
-        <OutputGroup>OptionalProjectsOutputGroup</OutputGroup>
-        <ProjectName>$(ProjectName)</ProjectName>
-      </_OptionalProjectsOutputs>
-    </ItemGroup>
-
-    <PropertyGroup>
-      <_ContinueOnError Condition="'$(BuildingProject)' == 'true'">true</_ContinueOnError>
-      <_ContinueOnError Condition="'$(BuildingProject)' != 'true'">false</_ContinueOnError>
-    </PropertyGroup>
-
-    <MSBuild
-      Projects="@(OptionalProjectBuildReferences)"
-      Targets="GetOptionalProjectOutputs"
-      BuildInParallel="$(BuildInParallel)"
-      Properties="%(OptionalProjectBuildReferences.SetConfiguration); %(OptionalProjectBuildReferences.SetPlatform)"
-      ContinueOnError="$(_ContinueOnError)">
-      <Output TaskParameter="TargetOutputs" ItemName="_OptionalProjectOutputsFromOtherProjects"/>
-    </MSBuild>
-
-    <ItemGroup>
-      <_AllOptionalProjectOutputs Include="@(_OptionalProjectsOutputs)"/>
-      <_AllOptionalProjectOutputs Include="@(_OptionalProjectOutputsFromOtherProjects)"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <OptionalProjectOutputs Include="@(_AllOptionalProjectOutputs)">
-        <ProjectName>$(ProjectName)</ProjectName>
-        <OutputGroup>OptionalProjectOutputGroup</OutputGroup>
-      </OptionalProjectOutputs>
-    </ItemGroup>
-
-  </Target>
-
-  <!-- ============================== -->
-  <!-- Getting package architecture.  -->
-  <!-- ============================== -->
-
-  <PropertyGroup>
-    <_GetPackagePropertiesDependsOn>
-      $(_GetPackagePropertiesDependsOn);
-      _GetProjectArchitecture;
-      _GetRecursiveProjectArchitecture;
-      _GetPackageArchitecture;
-      _GetDefaultResourceLanguage;
-    </_GetPackagePropertiesDependsOn>
-  </PropertyGroup>
-
-  <!-- Extract Project Architecture from the payload -->
-  <Target Name="_GetRecursiveProjectArchitecture">
-
-    <ItemGroup>
-      <_RecursiveProjectArchitecture Include="@(PackagingOutputs)" Condition="'%(OutputGroup)' == '_GetProjectArchitecture'" />
-      <_RecursiveProjectArchitecture Remove="@(_RecursiveProjectArchitecture)" Condition="'%(ProjectName)' == '$(ProjectName)'" />
-    </ItemGroup>
-
-  </Target>
-
-  <!-- Gets package architecture. -->
-  <Target Name="_GetPackageArchitecture">
-
-    <GetPackageArchitecture
-        Platform="$(Platform)"
-        ProjectArchitecture="@(ProjectArchitecture)"
-        RecursiveProjectArchitecture="@(_RecursiveProjectArchitecture)"
-        VsTelemetrySession="$(VsTelemetrySession)"
-            >
-      <Output TaskParameter="PackageArchitecture" PropertyName="PackageArchitecture" />
-    </GetPackageArchitecture>
-
-  </Target>
-
   <!-- Gets default resource language for the package. -->
   <Target Name="_GetDefaultResourceLanguage">
 
@@ -1595,16 +1240,5 @@
       </CopyWinmdArtifactsOutputGroupOutputs>
     </ItemGroup>
 
-  </Target>
-
-  <Target Name="_ValidateConfiguration">
-    <ValidateConfiguration
-      TargetPlatformMinVersion="$(TargetPlatformMinVersion)"
-      TargetPlatformVersion="$(TargetPlatformVersion)"
-      ProjectLanguage="$(Language)"
-      VsTelemetrySession="$(VsTelemetrySession)"
-      TargetPlatformIdentifier="$(TargetPlatformIdentifierAdjusted)"
-      Platform="$(Platform)">
-    </ValidateConfiguration>
   </Target>
 </Project>
