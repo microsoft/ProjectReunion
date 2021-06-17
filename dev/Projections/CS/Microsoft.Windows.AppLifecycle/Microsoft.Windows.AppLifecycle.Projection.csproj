@@ -18,20 +18,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Microsoft.ApplicationModel.Resources.vcxproj" />
+    <ProjectReference Include="..\..\..\ProjectReunion_DLL\ProjectReunion_DLL.vcxproj" >
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
   <PropertyGroup>
-    <CSWinRTIncludes>Microsoft.ApplicationModel.Resources</CSWinRTIncludes>
+    <CSWinRTIncludes>Microsoft.Windows.AppLifecycle</CSWinRTIncludes>
     <CSWinRTWindowsMetadata>10.0.18362.0</CSWinRTWindowsMetadata>
-    <NoWarn>MSB3271</NoWarn>
   </PropertyGroup>
 
   <!-- Configure the release build binary to be as required by internal API scanning tools. -->
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>	
+  </PropertyGroup>
 
   <ItemGroup>
     <CsWinRTInputs Include="$(OutDir)/**/*.winmd" />

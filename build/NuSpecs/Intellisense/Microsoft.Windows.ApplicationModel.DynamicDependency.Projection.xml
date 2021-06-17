@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doc>
   <assembly>
-    <name>Microsoft.Windows.ApplicationModel.DynamicDependency</name>
+    <name>Microsoft.Windows.ApplicationModel.DynamicDependency.Projection</name>
   </assembly>
   <members>
   </members>
