@@ -4,7 +4,7 @@
 
 | Delight users with modern UI | Access new platform features | Backwards compatible | 
 |:--:|:--:|:--:|
-| <img src="https://docs.microsoft.com/media/illustrations/biztalk-get-started-get-started.svg" width=250 alt="Modern navigation"/><br>Powerful WinUI 3 UI | <img src="https://docs.microsoft.com/media/illustrations/biztalk-get-started-scenarios.svg" width=250 alt="Platform logo"/><br>Localization + power status + more<br> | <img src="https://docs.microsoft.com/media/illustrations/biztalk-host-integration-install-configure.svg" width=250 alt="Down-level logo"/><br>Down to Windows 10 1809 |
+| <img src="./docs/images/modern-navigation.png" width=250 alt="Modern navigation"/><br>Powerful WinUI 3 UI | <img src="./docs/images/platform-logo.png" width=250 alt="Platform logo"/><br>Localization + power status + more<br> | <img src="./docs/images/down-level-logo.png" width=250 alt="Down-level logo"/><br>Down to Windows 10 1809 |
 
 ...and more, **without having to rewrite your app!**
 
