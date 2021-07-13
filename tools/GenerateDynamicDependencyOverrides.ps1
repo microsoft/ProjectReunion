@@ -56,7 +56,7 @@ $content_json=@"
         "LIBID": "CE96C745-3017-460E-895B-4FD98E1194F2",
         "Impl": {
             "CLSID": {
-                "UUID": "E739C755-0D09-48DF-A468-A5DF0B5422DC",
+                "UUID": "E739C755-0D09-48DF-A468-A5DF0B5422DC"
             }
         },
         "Task": {

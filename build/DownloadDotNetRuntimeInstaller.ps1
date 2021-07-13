@@ -1,7 +1,7 @@
 [CmdLetBinding()]
 Param(
     [string]$Platform = "x86",
-    [string]$OutputDirectory = "$PSScriptRoot\..\..\..\BuildOutput\Debug\x86\TestDependencies"
+    [string]$OutputDirectory = "$PSScriptRoot\..\BuildOutput\Debug\x86\TestDependencies"
 )
 
 $ProgressPreference = "SilentlyContinue"

@@ -84,10 +84,10 @@ function Enable-CrashDumpsForProcesses {
     }
 }
 
-# enable dump collection for the following apps:
+# Note: te.exe and te.processhost.exe are already enabled for dump collection by TestPass-OneTimeMachineSetupCore.ps1
+
+# Enable dump collection for any additional apps/processes below:
 $namesOfProcessesForDumpCollection = @(
-    "te.exe",
-    "te.processhost.exe"
 )
 
 Enable-CrashDumpsForProcesses $namesOfProcessesForDumpCollection

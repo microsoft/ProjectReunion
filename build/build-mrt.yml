@@ -95,8 +95,8 @@ steps:
   displayName: 'Download .NET Runtime Windows installer'
   inputs:
     targetType: filePath
-    workingDirectory: ${{ parameters.MRTSourcesDirectory }}\build
-    filePath: ${{ parameters.MRTSourcesDirectory }}\build\DownloadDotNetRuntimeInstaller.ps1
+    workingDirectory: $(Build.SourcesDirectory)\build
+    filePath: $(Build.SourcesDirectory)\build\DownloadDotNetRuntimeInstaller.ps1
     arguments: -Platform $(buildPlatform) -OutputDirectory $(Build.SourcesDirectory)\BuildOutput\$(buildPlatform)\$(buildConfiguration)\TestDependencies
 
 #  - task: BatchScript@1

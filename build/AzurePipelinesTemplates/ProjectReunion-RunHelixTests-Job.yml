@@ -30,8 +30,9 @@ jobs:
 
     # The target queues to run the tests on.
     # Currently runs on queues owned by the WinUI/XAML team. This should run on queues hosted by ProjectReunion in the future.
-    helixTargetQueuesOpen: 'Windows.10.Amd64.ClientRS5.Open.Xaml'
-    helixTargetQueuesClosed: 'Windows.10.Amd64.ClientRS5.Xaml'
+    # Note: %3b is the escape sequence for ';' which is used as the delimiter
+    helixTargetQueuesOpen: 'Windows.10.Amd64.ClientRS5.Open.Xaml%3bWindows.10.Amd64.Client19h1.Open.Xaml'
+    helixTargetQueuesClosed: 'Windows.10.Amd64.ClientRS5.Xaml%3bWindows.10.Amd64.Client19h1.Xaml'
 
     # When a test fails, it is re-run 10 times. This variable specifies how many times out of 10 it is required to pass
     rerunPassesRequiredToAvoidFailure: 8
@@ -63,8 +64,8 @@ jobs:
     displayName: 'Download .NET Runtime Windows installer'
     inputs:
       targetType: filePath
-      workingDirectory: $(Build.SourcesDirectory)\dev\MRTCore\build
-      filePath: $(Build.SourcesDirectory)\dev\MRTCore\build\DownloadDotNetRuntimeInstaller.ps1
+      workingDirectory: $(Build.SourcesDirectory)\build
+      filePath: $(Build.SourcesDirectory)\build\DownloadDotNetRuntimeInstaller.ps1
       arguments: -Platform $(buildPlatform) -OutputDirectory $(testPayloadDir)
 
   - task: NuGetToolInstaller@0
@@ -75,15 +76,6 @@ jobs:
     parameters:
       displayName: ProjectReunion.Helix.Test
       solutionPath: test\ProjectReunion.Helix.Test\ProjectReunion.Helix.Test.sln
-
-  # Publish the binaries from building ProjectReunion.Helix.Test.sln
-  # This is not required, but can be useful for debugging purposes.
-  - task: PublishBuildArtifacts@1
-    displayName: Publish BuildOutput
-    condition: always()
-    inputs:
-      PathtoPublish: $(Build.SourcesDirectory)\BuildOutput
-      artifactName: HelixTestBinaries
 
   # Note: 'NuGetCommand@2' is ambiguous so the specific task GUID must be used instead.
   - task: 333b11bd-d341-40d9-afcf-b32d5ce6f23b@2
@@ -102,17 +94,26 @@ jobs:
       artifactName: 'mrtcore_test_binaries_$(buildPlatform)'
       downloadPath: $(testPayloadDir)
 
+  # Publish the full testPayloadDir contents.
+  # This is not required, but can be useful for debugging purposes.
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish testPayloadDir'
+    condition: always()
+    inputs:
+      PathtoPublish: $(testPayloadDir)
+      artifactName: HelixTestPayloadDir
+
   # Discover the TAEF test binaries to run and generate the Helix Work Items for them.
   # Note: There are 3 test suites for MRT Core. We currently run 2 of them in Helix.
   - task: powershell@2
-    displayName: 'Discover tests'
+    displayName: 'Discover MRT Core UnitTests'
     inputs:
       targetType: filePath
       filePath: $(winUIHelixPipelineScripts)\GenerateHelixWorkItems.ps1
       arguments: -TestFilePattern 'mrtcore_test_binaries_$(buildPlatform)\UnitTest\*.dll' -TestBinaryDirectoryPath '$(testPayloadDir)' -OutputProjFile '$(helixWorkItemsDir)\MrtCore-UnitTests.proj' -WorkItemPrefix 'MrtCore.UnitTests.$(buildPlatform).$(buildConfiguration)' -TestNamePrefix 'MrtCore.UnitTests.$(buildPlatform).$(buildConfiguration)'
 
   - task: powershell@2
-    displayName: 'Discover tests'
+    displayName: 'Discover MRT Core BaseUnitTests'
     inputs:
       targetType: filePath
       filePath: $(winUIHelixPipelineScripts)\GenerateHelixWorkItems.ps1
@@ -120,7 +121,7 @@ jobs:
 
   # TODO: This test needs to be converted to TAEF to run in Helix.
   # - task: powershell@2
-  #   displayName: 'Discover tests'
+  #   displayName: 'Discover MRT Core Managed tests'
   #   inputs:
   #     targetType: filePath
   #     filePath: $(winUIHelixPipelineScripts)\GenerateHelixWorkItems.ps1
@@ -129,7 +130,7 @@ jobs:
   # Publish the generated test work items (*.proj file) as Pipeline artifact(s).
   # This is not required, but it is useful for debugging purposes to see what tests were discovered.
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish test work items'
+    displayName: 'Publish generated test work items'
     inputs:
       PathtoPublish: $(helixWorkItemsDir)
       artifactName: 'HelixWorkItems'
