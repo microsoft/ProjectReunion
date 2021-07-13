@@ -13,7 +13,7 @@ events that require immediate user/developer action.
 * [The Windows Push Notification Services (WNS) Overview](https://docs.microsoft.com/windows/uwp/design/shell/tiles-and-notifications/windows-push-notification-services--wns--overview) Defines how an app today can subscribe to Push Notifications and send a payload down to the corresponding client.
 
 The below diagram is an illustration of the overall Push Flow that we have today:<br/>
-![Legacy Flow For Project Reunion](Legacy.png)
+![Legacy Flow For Project Reunion](Legacy.PNG)
 
 ## The problems today
 
@@ -56,7 +56,7 @@ We will prioritize the following feature set for Project Reunion:
 A Portal Registration flow through [AAD (Azure Active Directory)](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app) will also be defined that removes the dependency of the Push Flow with <br/>
 the Partner Center Portal. The RemoteIdentifier GUID in this spec maps to the ApplicationId(ClientId) in the AAD App <br/>
 Registration process. Below  is an illustration of the proposed flow through AAD:<br/>
-![Push Flow For Project Reunion](Push.png)
+![Push Flow For Project Reunion](Push.PNG)
 
 Phase 1 (Project Reunion Preview):<br/>
 WNS Push APIs will only support WIN32 Packaged app (MSIX Desktop Bridge).
