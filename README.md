@@ -2,7 +2,7 @@
 
 *Previously known as Project Reunion*.
 
-| Delight users with modern UI | Access new platform features | Backwards compatible | 
+| Delight users with modern UI | Access new platform features | Backwards compatible |
 |:--:|:--:|:--:|
 | <img src="https://docs.microsoft.com/media/illustrations/biztalk-get-started-get-started.svg" width=250 alt="Modern navigation"/><br>Powerful WinUI 3 UI | <img src="https://docs.microsoft.com/media/illustrations/biztalk-get-started-scenarios.svg" width=250 alt="Platform logo"/><br>Localization + power status + more<br> | <img src="https://docs.microsoft.com/media/illustrations/biztalk-host-integration-install-configure.svg" width=250 alt="Down-level logo"/><br>Down to Windows 10 1809 |
 
@@ -26,12 +26,13 @@ Some notes about 0.8...
 
 ### Roadmap
 
-Here's a snippet of what we intend to deliver in 2021 *(times/features/releases are tentative and subject to change)*: 
+Here's a snippet of what we intend to deliver in 2021 *(times/features/releases are tentative and subject to change)*:
 
-App type |       Windows App SDK 0.8    |       Windows App SDK 1.0 (Q4 2021)     | 
+App type |       Windows App SDK 0.8    |       Windows App SDK 1.0 (Q4 2021)     |
 -- | ------------------------------- | ------------------------------- |
-[Packaged MSIX](https://docs.microsoft.com/windows/msix/overview) desktop apps<br>(WPF, Win32, WinForms, console) |      ✅ [WinUI 3](https://github.com/microsoft/microsoft-ui-xaml/blob/master/docs/roadmap.md#winui-3)<br>✅ [Text rendering](https://docs.microsoft.com/windows/apps/project-reunion/dwritecore)<br>✅ [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>🔄 [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111)  | ✅ [WinUI 3](https://github.com/microsoft/microsoft-ui-xaml/blob/master/docs/roadmap.md#winui-3)<br>✅ [Text rendering](https://github.com/microsoft/ProjectReunion/issues/112)<br>✅ [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>✅ [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111)  <br>🔄 [Push Notifications](https://github.com/microsoft/ProjectReunion/issues/334)  | 
-Unpackaged desktop apps<br>(WPF, Win32, WinForms, console) |    🔄 [Text rendering](https://docs.microsoft.com/windows/apps/project-reunion/dwritecore)<br>🔄 [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>🔄 [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111)  |  ✅ [WinUI 3](https://github.com/microsoft/microsoft-ui-xaml/blob/master/docs/roadmap.md#winui-3)<br>✅ [Text rendering](https://docs.microsoft.com/windows/apps/project-reunion/dwritecore)<br>✅ [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>✅ [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111) <br>🔄 [Push Notifications](https://github.com/microsoft/ProjectReunion/issues/334) | 
+[Packaged MSIX](https://docs.microsoft.com/windows/msix/overview) desktop apps<br>(WPF, Win32, WinForms, console) |      ✅ [WinUI 3](https://github.com/microsoft/microsoft-ui-xaml/blob/master/docs/roadmap.md#winui-3)<br>✅ [Text rendering](https://docs.microsoft.com/windows/apps/project-reunion/dwritecore)<br>✅ [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>🔄 [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111)  | ✅ [WinUI 3](https://github.com/microsoft/microsoft-ui-xaml/blob/master/docs/roadmap.md#winui-3)<br>✅ [Text rendering](https://github.com/microsoft/ProjectReunion/issues/112)<br>✅ [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>✅ [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111)  <br>🔄 [Push Notifications](https://github.com/microsoft/ProjectReunion/issues/334)  |
+Unpackaged desktop apps<br>(WPF, Win32, WinForms, console) |    🔄 [Text rendering](https://docs.microsoft.com/windows/apps/project-reunion/dwritecore)<br>🔄 [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>🔄 [Dynamic Dependencies](https://github.com/microsoft/WindowsAppSDK/blob/main/specs/dynamicdependencies/DynamicDependencies.md)<br>🔄 [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111)  |  ✅ [WinUI 3](https://github.com/microsoft/microsoft-ui-xaml/blob/master/docs/roadmap.md#winui-3)<br>✅ [Text rendering](https://docs.microsoft.com/windows/apps/project-reunion/dwritecore)<br>✅ [Localization](https://docs.microsoft.com/windows/apps/project-reunion/mrtcore/mrtcore-overview)<br>✅ [Dynamic Dependencies](https://github.com/microsoft/WindowsAppSDK/blob/main/specs/dynamicdependencies/DynamicDependencies.md)<br>✅ [App lifecycle](https://github.com/microsoft/ProjectReunion/issues/111) <br>🔄 [Push Notifications](https://github.com/microsoft/ProjectReunion/issues/334) |
+
 
 ✅ Supported | 🔄 Experimental
 
@@ -44,7 +45,7 @@ See our [full roadmap](docs/roadmap.md) for more details.
 
 The Windows App SDK aims to work on supported versions of Windows.
 Right now we support down to build 17763 (version 1809/October 2018 Update) of Windows 10.
-Wherever possible, we'll use techniques like '_polyfills_' 
+Wherever possible, we'll use techniques like '_polyfills_'
 and custom implementations to do the
 heavy lifting for you and make sure your app works across Windows versions and devices.
 In the future, there may be a couple APIs that are dependent on new OS features
@@ -55,7 +56,7 @@ this is the exception and not the norm, and provide reasonable fallbacks when po
 
 ### Documentation
 
-* [More details about the Windows App SDK](https://github.com/microsoft/ProjectReunion/blob/master/docs/README.md) - 
+* [More details about the Windows App SDK](https://github.com/microsoft/ProjectReunion/blob/master/docs/README.md) -
 More on what the project is and how we're approaching the work.
 * [Video on Windows App SDK](https://aka.ms/project_reunion_ignite) - Learn about the Windows App SDK in a 22 minute video!
 * [Roadmap](docs/roadmap.md) - Where we're going!
