@@ -25,6 +25,8 @@ using namespace winrt::Windows::Foundation;
 using namespace winrt::Microsoft::Windows::AppLifecycle;
 using namespace winrt::Microsoft::Windows::PushNotifications;
 
+#include "Shared.h"
+
 winrt::guid remoteId1(L"a2e4a323-b518-4799-9e80-0b37aeb0d225"); // Generated from ms.portal.azure.com
 winrt::guid remoteId2(L"CA1A4AB2-AC1D-4EFC-A132-E5A191CA285A"); // Dummy guid from visual studio guid tool generator
 
@@ -186,53 +188,17 @@ namespace Test::PushNotifications
             RunTest(L"ChannelRequestUsingRemoteId", channelTestWaitTime());
         }
 
-        TEST_METHOD(UnpackagedChannelRequestUsingRemoteId)
+        TEST_METHOD(ChannelRequestUsingRemoteId_unpackaged)
         {
-            PACKAGE_VERSION version{};
-            version.Major = 4;
-            version.Minor = 1;
-            version.Build = 1967;
-            version.Revision = 333;
+            // Launch the test app to register for protocol launches.
+            auto process = Execute(L"PushNotificationsTestApp.exe", L"ChannelRequestUsingRemoteId", L"D:\\WindowsAppSDK\\BuildOutput\\Debug\\x64\\PushNotificationsTestApp\\"/*g_deploymentDir*/);
+            VERIFY_IS_TRUE(process.is_valid());
 
-            const UINT32 majorMinorVersion = static_cast<UINT32>((version.Major << 16) | version.Minor);
-            //const UINT32 majorMinorVersion{ 0x00040001 };
-            //const UINT32 majorMinorVersion{ 0x00000008 };
-            PCWSTR versionTag{};
-            const PACKAGE_VERSION minVersion{};
-            const HRESULT hr{ MddBootstrapInitialize(majorMinorVersion, nullptr, minVersion) };
+            VERIFY_IS_TRUE(wil::handle_wait(process.get(), channelTestWaitTime()));
 
-            // Check the return code for errors. If there is an error, display the result.
-            if (FAILED(hr))
-            {
-                wprintf(L"Error 0x%X in MddBootstrapInitialize(0x%08X, %s, %hu.%hu.%hu.%hu)\n",
-                    hr, majorMinorVersion, versionTag, minVersion.Major, minVersion.Minor, minVersion.Build, minVersion.Revision);
-                //return hr;
-            }
-
-            //RunTest(L"BackgroundActivationTest", testWaitTime()); // Need to launch one time to enable background activation.
-
-            //auto LocalBackgroundTask = winrt::create_instance<winrt::Windows::ApplicationModel::Background::IBackgroundTask>(c_comServerId, CLSCTX_ALL);
-            //auto mockBackgroundTaskInstance = winrt::make<MockBackgroundTaskInstance>();
-            //VERIFY_NO_THROW(LocalBackgroundTask.Run(mockBackgroundTaskInstance));
-
-            //auto args = AppInstance::GetCurrent().GetActivatedEventArgs();
-            //auto kind = args.Kind();
-
-            //PushNotificationActivationInfo info(
-            //    PushNotificationRegistrationOptions::PushTrigger | PushNotificationRegistrationOptions::ComActivator,
-            //    winrt::guid(c_comServerId)); // same clsid as app manifest
-
-            //g_appToken = PushNotificationManager::RegisterActivator(info);
-
-            //RunTest(L"UnpackagedChannelRequestUsingRemoteId", channelTestWaitTime());
-            auto channelOperation = PushNotificationManager::CreateChannelAsync(remoteId1);
-            auto channelOperationResult = ChannelRequestHelper(channelOperation);
-
-            // Release the DDLM and clean up.
-            MddBootstrapShutdown();
-
-            //return channelOperationResult == S_OK;
-            VERIFY_ARE_EQUAL(channelOperationResult, S_OK);
+            DWORD exitCode{};
+            VERIFY_WIN32_BOOL_SUCCEEDED(GetExitCodeProcess(process.get(), &exitCode));
+            VERIFY_ARE_EQUAL(exitCode, 0);
         }
 
         TEST_METHOD(MultipleChannelClose)

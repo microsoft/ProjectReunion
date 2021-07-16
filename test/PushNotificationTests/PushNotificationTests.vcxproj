@@ -237,6 +237,7 @@
     <ClInclude Include="MockBackgroundTaskInstance.h" />
     <ClInclude Include="MockRawNotification.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Shared.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="APITests.cpp" />
@@ -252,6 +253,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x86'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Shared.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

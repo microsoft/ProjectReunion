@@ -69,6 +69,13 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
 
         // API supports channel requests only for packaged applications for v0.8 version
 //        THROW_HR_IF(E_NOTIMPL, !AppModel::Identity::IsPackagedProcess());
+        if (!AppModel::Identity::IsPackagedProcess())
+        {
+            co_return winrt::make<PushNotificationCreateChannelResult>(
+                nullptr,
+                S_OK,
+                PushNotificationChannelStatus::CompletedSuccess);
+        }
 
         auto cancellation{ co_await winrt::get_cancellation_token() };
 
@@ -130,8 +137,17 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
 
     PushNotificationRegistrationToken PushNotificationManager::RegisterActivator(PushNotificationActivationInfo const& details)
     {
+        printf("elx - RegisterActivator - 1\n");
         THROW_HR_IF_NULL(E_INVALIDARG, details);
 
+        printf("elx - RegisterActivator - 2\n");
+        if (!AppModel::Identity::IsPackagedProcess())
+        {
+            printf("elx - RegisterActivator - 3\n");
+            return PushNotificationRegistrationToken { 0, nullptr };
+        }
+
+        printf("elx - RegisterActivator - 4\n");
         GUID taskClsid = details.TaskClsid();
         THROW_HR_IF(E_INVALIDARG, taskClsid == GUID_NULL);
 
@@ -231,7 +247,15 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
 
     void PushNotificationManager::UnregisterActivator(PushNotificationRegistrationToken const& token, PushNotificationRegistrationOptions const& options)
     {
+        printf("elx - UnregisterActivator - 1\n");
+        if (!AppModel::Identity::IsPackagedProcess())
+        {
+            printf("elx - UnregisterActivator - 2\n");
+            return;
+        }
+
         THROW_HR_IF_NULL(E_INVALIDARG, token);
+
         if (WI_IsFlagSet(options, PushNotificationRegistrationOptions::PushTrigger))
         {
             auto taskRegistration = token.TaskRegistration();
