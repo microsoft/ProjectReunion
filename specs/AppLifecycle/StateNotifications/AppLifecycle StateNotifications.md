@@ -4,14 +4,8 @@ Windows App SDK introduces a new AppLifecycle component that provides a core set
 app activation and lifecycle. Much of this functionality is directly equivalent - or very similar -
 to existing functionality within the platform. However, there is value in abstracting this
 functionality so that all app types can use it, delivering it out-of-band from the OS, and making it
-available as open-source. The totality of AppLifecycle features in v1 is as follows (additional
-features may be added in later releases):
-
--   Rich activation objects
--   Selective single/multi-instancing
--   System state and power notifications.
-
-This spec addresses the System State and Power Notifications APIs in the component.
+available as open-source. This spec addresses the System State and Power Notifications APIs in 
+the component.
 
 ## Background
 
@@ -74,16 +68,16 @@ int APIENTRY wWinMain(
     winrt::init_apartment();
 
     // Optionally, register callbacks for power/battery state changes.
-    PowerManager::BatteryStateChanged([](auto&&...)
-        { OnBatteryStateChanged(); });
-    PowerManager::PowerSupplyStateChanged([](auto&&...)
-        { OnPowerStateChanged(); });
-    PowerManager::EnergySaverStateChanged([](auto&&...)
-        { OnEnergySaverStateChange(); });
+    PowerManager::BatteryStatusChanged([](auto&&...)
+        { OnBatteryStatusChanged(); });
+    PowerManager::PowerSupplyStatusChanged([](auto&&...)
+        { OnPowerStatusChanged(); });
+    PowerManager::EnergySaverStatusChanged([](auto&&...)
+        { OnEnergySaverStatusChanged(); });
     PowerManager::RemainingChargePercentChanged([](auto&&...)
-        { OnRemainingChargePercentChange(); });
+        { OnRemainingChargePercentChanged(); });
     PowerManager::RemainingDischargeTimeChanged([](auto&&...)
-        { OnRemainingDischargeTimeChange(); });
+        { OnRemainingDischargeTimeChanged(); });
 
     ///////////////////////////////////////////////////////////////////////////
     // Standard Win32 window configuration/creation and message pump:
@@ -114,17 +108,17 @@ the interests of being a good power/battery citizen.
 Note that these are regular WinRT event delegate invocations. See also: https://github.com/microsoft/xlang/issues/673
 
 ```c++
-void OnBatteryStateChanged()
+void OnBatteryStatusChanged()
 {
-    BatteryState batteryState = PowerManager::BatteryState();
+    BatteryStatus batteryStatus = PowerManager::BatteryStatus();
     int remainingCharge = PowerManager::RemainingChargePercent();
 
-    if (batteryState == BatteryState::Discharging && remainingCharge < 25)
+    if (batteryStatus == BatteryStatus::Discharging && remainingCharge < 25)
     {
         // We're in a bad battery state, we should pause any non-critical work.
         PauseNonCriticalWork();
     }
-    else if (batteryState == BatteryState::Charging && remainingCharge > 75)
+    else if (batteryStatus == BatteryStatus::Charging && remainingCharge > 75)
     {
         // Battery is in great shape, let's kick of some high-power work.
         StartPowerIntensiveWork();
@@ -141,24 +135,24 @@ when it receives a power supply state change notification, it might also want to
 status before proceeding.
 
 ```c++
-void OnPowerSupplyStateChanged()
+void OnPowerSupplyStatusChanged()
 {
-    PowerSupplyState powerState = PowerManager::PowerSupplyState();
-    BatteryState batteryState = PowerManager::BatteryState();
+    PowerSupplyStatus powerStatus = PowerManager::PowerSupplyStatus();
+    BatteryStatus batteryStatus = PowerManager::BatteryStatus();
     int remainingCharge = PowerManager::RemainingChargePercent();
 
-    // Note if the BatteryState is BatteryState::NotPresent,
+    // Note if the BatteryStatus is BatteryStatus::NotPresent,
     // then RemainingChargePercent is 100.
 
-    if (batteryState == BatteryState::Discharging
+    if (batteryStatus == BatteryStatus::Discharging
         && remainingCharge < 25
-        && powerState != PowerSupplyState::Adequate)
+        && powerStatus != PowerSupplyStatus::Adequate)
     {
         // We're in a bad power/battery state: let's pause any non-critical work.
         PauseNonCriticalWork();
     }
-    else if (powerState == PowerSupplyState::Adequate ||
-        (batteryState == BatteryState::Charging && remainingCharge > 75))
+    else if (powerStatus == PowerSupplyStatus::Adequate ||
+        (batteryStatus == BatteryStatus::Charging && remainingCharge > 75))
     {
         // Power/battery is in great shape, let's kick of some high-power work.
         StartPowerIntensiveWork();
@@ -173,10 +167,10 @@ functionality should be completely seamless and indistinguishable from the exist
 members, such that the app can consume these in exactly the same way.
 
 ```c++
-PowerManager::OnDisplayStatusChanged([](auto&&...)
+void OnDisplayStatusChanged([](auto&&...)
 {
-    DisplayState displayState = PowerManager::DisplayState();
-    if (displayState == DisplayState::Off)
+    DisplayStatus displayStatus = PowerManager::DisplayStatus();
+    if (displayStatus == DisplayStatus::Off)
     {
         // The screen is off, let's stop rendering foreground graphics,
         // and instead kick off some background work now.
@@ -198,16 +192,16 @@ winrt::event_token s_powerToken;
 
 void MyRegisterPowerManagerCallbacks()
 {
-    s_batteryToken = PowerManager::BatteryStateChanged([](IInspectable sender, auto args)
-        { OnBatteryStateChanged(sender, args); });
-    s_powerToken = PowerManager::PowerSupplyStateChanged([](IInspectable sender, auto args)
-        { OnPowerSupplyStateChanged(sender, args); });
+    s_batteryToken = PowerManager::BatteryStatusChanged([](IInspectable sender, auto args)
+        { OnBatteryStatusChanged(sender, args); });
+    s_powerToken = PowerManager::PowerSupplyStatusChanged([](IInspectable sender, auto args)
+        { OnPowerSupplyStatusChanged(sender, args); });
 }
 
 void MyUnregisterPowerManagerCallbacks()
 {
-    PowerManager::BatteryStateChanged(s_batteryToken);
-    PowerManager::PowerSupplyStateChanged(s_powerToken);
+    PowerManager::BatteryStatusChanged(s_batteryToken);
+    PowerManager::PowerSupplyStatusChanged(s_powerToken);
 }
 ```
 
@@ -239,19 +233,25 @@ The well-known
 [power-setting GUIDs](https://docs.microsoft.com/windows/win32/power/power-setting-guids) are
 listed below, along with the proposed mappings to new PowerManager events and enum-based properties.
 
-| Existing GUID                     | Description                                                                                                                                                                                                            | New property                                                           |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| GUID_ACDC_POWER_SOURCE            | The system power source has changed.                                                                                                                                                                                   | `PowerSourceKind`                                                      |
-| GUID_BATTERY_PERCENTAGE_REMAINING | The remaining battery capacity has changed.                                                                                                                                                                            | `RemainingChargePercentChanged`, `RemainingChargePercent`              |
-| GUID_CONSOLE_DISPLAY_STATE        | The current monitor's display state has change. Apps should stop rendering graphics content when the monitor is off to reduce system power consumption.                                                                | `DisplayStatus`                                                        |
-| GUID_GLOBAL_USER_PRESENCE         | The user status associated with any session has changed. This notification is only to services and other programs running in session 0. User-mode applications should register for GUID_SESSION_USER_PRESENCE instead. | _Not implemented yet_                                                  |
-| GUID_IDLE_BACKGROUND_TASK         | The system is busy: now is a good time for apps to perform background or idle tasks that would otherwise prevent the computer from entering an idle state.                                                             | `SystemIdleStatus`                                                     |
-| GUID_MONITOR_POWER_ON             | The monitor has been powered on or off. From Windows 8 and Windows Server 2012, apps should use GUID_CONSOLE_DISPLAY_STATE instead.                                                                                    | _Not implemented yet_                                                  |
-| GUID_POWER_SAVING_STATUS          | Battery saver has been turned on or off.                                                                                                                                                                               | `EnergySaverStatus`                                                    |
-| GUID_POWERSCHEME_PERSONALITY      | The active power scheme personality has changed. All power schemes map to one of these personalities.                                                                                                                  | `PowerSchemePersonality`                                               |
-| GUID_SESSION_DISPLAY_STATUS       | The display associated with the application's session has been powered on or off.                                                                                                                                      | Covered by GUID_CONSOLE_DISPLAY_STATE.                                 |
-| GUID_SESSION_USER_PRESENCE        | The user status associated with the application's session has changed.                                                                                                                                                 | `UserPresenceStatus`                                                   |
-| GUID_SYSTEM_AWAYMODE              | The system is entering or exiting away mode.                                                                                                                                                                           | `SystemAwayModeStatus` |
+| Existing GUID                     | Description                                                  | New property and event                                    |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| GUID_ACDC_POWER_SOURCE            | The system power source has changed.                         | `PowerSourceKind, PowerSourceKindChanged`                 |
+| GUID_BATTERY_PERCENTAGE_REMAINING | The remaining battery capacity has changed.                  | `RemainingChargePercent`, `RemainingChargePercentChanged` |
+| GUID_CONSOLE_DISPLAY_STATE        | The current monitor's display state has change. Apps should stop rendering graphics content when the monitor is off to reduce system power consumption. | _Not implemented_                                         |
+| GUID_GLOBAL_USER_PRESENCE         | The user status associated with any session has changed. This notification is only to services and other programs running in session 0. User-mode applications should register for GUID_SESSION_USER_PRESENCE instead. | _Not implemented_                                         |
+| GUID_IDLE_BACKGROUND_TASK         | The system is busy: now is a good time for apps to perform background or idle tasks that would otherwise prevent the computer from entering an idle state. | `SystemIdleStatusChanged` (no property)               |
+| GUID_MONITOR_POWER_ON             | The monitor has been powered on or off. From Windows 8 and Windows Server 2012, apps should use GUID_CONSOLE_DISPLAY_STATE instead. | _Not implemented_                                         |
+| GUID_POWER_SAVING_STATUS          | Battery saver has been turned on or off.                     | `EnergySaverStatus, EnergySaverStatusChanged`             |
+| GUID_POWERSCHEME_PERSONALITY      | The active power scheme personality has changed. All power schemes map to one of these personalities. | _Not implemented_                                         |
+| GUID_SESSION_DISPLAY_STATUS       | The display associated with the application's session has been powered on or off. | `DisplayStatus, DisplayStatusChanged`                     |
+| GUID_SESSION_USER_PRESENCE        | The user status associated with the application's session has changed. | `UserPresenceStatus`                                      |
+| GUID_SYSTEM_AWAYMODE              | The system is entering or exiting away mode.                 | _Not implemented_                                         |
+
+In addition, the PowerRegisterForEffectivePowerModeNotifications API is brought forward with a new property and event:
+
+| Existing API                                             | Description                             | New property and event                          |
+| -------------------------------------------------------- | --------------------------------------- | ----------------------------------------------- |
+| PowerRegisterForEffectivePowerModeNotifications function | The effective power mode of the system. | `EffectivePowerMode, EffectivePowerModeChanged` |
 
 The existing PowerManager class exposes only static properties and events: all members are valid to
 be brought over to the Windows App SDK version. Many existing enumerated values are brought over as-is as
@@ -260,114 +260,105 @@ well.
 ```idl
 namespace Microsoft.Windows.System.Power
 {
-    // Based on Windows.System.Power.BatteryStatus
-    enum BatteryState {
-        NotPresent,
-        Discharging,
-        Idle,
-        Charging
-    }
-
-    // Based on Windows.System.Power.EnergySaverStatus
-    enum EnergySaverState {
+    // Enums duplicated from the existing WinRT PowerManager API.
+    enum EnergySaverStatus
+    {
+        Uninitialized = 0,
         Disabled,
         Off,
         On
-    }
+    };
 
-    // Based on Windows.System.Power.PowerSupplyStatus
-    enum PowerSupplyState {
-        NotPresent,
+    enum BatteryStatus
+    {
+        NotPresent = 0,
+        Discharging,
+        Idle,
+        Charging
+    };
+
+    enum PowerSupplyStatus
+    {
+        NotPresent = 0,
         Inadequate,
         Adequate
-    }
+    };
 
-    // Kind of the device's power source
-    enum PowerSourceKind {
-        AC,
-        DC,
-        ShortTerm
-    }
+    // Enums based on the Win32 PowerSettingRegisterNotification API.
+    enum PowerSourceKind
+    {
+        AC = 0,
+        DC
+    };
 
-    // State of the primary display
-    enum DisplayState {
-        Off,
+    enum DisplayStatus
+    {
+        Off = 0,
         On,
         Dimmed
-    }
+    };
 
-    // Indicates whether the system is busy or idle.
-    enum SystemBusyState {
-        Idle,
-        Busy,
-    }
-
-    // Active power management personalities supported by the system
-    enum PowerSchemePersonality {
+    enum EffectivePowerMode
+    {
+        // EFFECTIVE_POWER_MODE_V1 values
+        BatterySaver,
+        BetterBattery,
+        Balanced,
         HighPerformance,
-        PowerSaver,
-        Balanced
-    }
+        MaxPerformance, 
+        // EFFECTIVE_POWER_MODE_V2 additional values
+        GameMode,
+        MixedReality
+    };
 
-    // User presence indicator - whether the user is present or absent
-    // (active or idle)
-    enum UserPresenceState {
-        Present,
+    enum UserPresenceStatus
+    {
+        Present = 0,
         Absent
-    }
+    };
 
-    // Indicates whether the system is entering or exiting "away" mode
-    enum SystemAwayModeState {
-        Away,
-        NotAway
-    }
+    enum SystemSuspendStatus
+    {
+        Uninitialized = 0,
+        Entering,
+        AutoResume,
+        ManualResume
+    };
 
-    // Largely a clone of the Windows.System.Power.PowerManager type
     static runtimeclass PowerManager
     {
-        // gets the device's battery status
-        static BatteryState BatteryState { get; };
+        static EnergySaverStatus EnergySaverStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> EnergySaverStatusChanged;
 
-        // gets the device's energy-saver status
-        static EnergySaverState EnergySaverState { get; };
+        static BatteryStatus BatteryStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> BatteryStatusChanged;
 
-        // gets the device's power supply status
-        static PowerSupplyState PowerSupplyState { get; };
+        static PowerSupplyStatus PowerSupplyStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> PowerSupplyStatusChanged;
 
-        // gets the total percentage of charge remaining from all batteries connected to
-        // the device. If the BatteryStatus is BatteryStatus::NotPresent, then the
-        // remaining charge is 100%.
-        static Int32 RemainingChargePercent { get; };
+        static Int32 RemainingChargePercent{ get; };
+        static event Windows.Foundation.EventHandler<Object> RemainingChargePercentChanged;
 
-        // gets the total runtime remaining from all batteries connected to the device
-        static TimeSpan RemainingDischargeTime { get; };
+        static Windows.Foundation.TimeSpan RemainingDischargeTime{ get; };
+        static event Windows.Foundation.EventHandler<Object> RemainingDischargeTimeChanged;
 
-        static EventHandler<Object> BatteryStatusChanged;
-        static EventHandler<Object> EnergySaverStateChanged;
-        static EventHandler<Object> PowerSupplyStateChanged;
-        static EventHandler<Object> RemainingChargePercentChanged;
-        static EventHandler<Object> RemainingDischargeTimeChanged;
+        static PowerSourceKind PowerSourceKind{ get; };
+        static event Windows.Foundation.EventHandler<Object> PowerSourceKindChanged;
 
-        // gets the kind of power source used by this machine
-        static PowerSourceKind PowerSourceKind { get; };
-        static EventHandler<Object> PowerSourceKindChanged;
+        static DisplayStatus DisplayStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> DisplayStatusChanged;
 
-        // gets the active power scheme personality
-        static PowerSchemePersonality PowerSchemePersonality { get; };
-        static event EventHandler<object> PowerSchemePersonalityChanged;
+        static event Windows.Foundation.EventHandler<Object> SystemIdleStatusChanged;
 
-        // gets the user's present/absent status
-        static UserPresenceState UserPresenceState;
-        static event EventHandler<object> UserPresenceStateChanged;
+        static Windows.Foundation.IAsyncOperation<EffectivePowerMode> EffectivePowerMode{ get; };
+        static event Windows.Foundation.EventHandler<Object> EffectivePowerModeChanged;
 
-        // gets the away/not-away status of the system away mode
-        static SystemAwayModeState SystemAwayModeState;
-        static event EventHandler<object> SystemAwayModeStateChanged;
+        static UserPresenceStatus UserPresenceStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> UserPresenceStatusChanged;
 
-        // gets the busy/idle state of the system
-        static SystemBusyState SystemBusyState;
-        static event EventHandler<object> SystemBusyStateChanged;
-    }
+        static SystemSuspendStatus SystemSuspendStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> SystemSuspendStatusChanged;
+    };
 }
 ```
 
@@ -375,11 +366,11 @@ namespace Microsoft.Windows.System.Power
 
 ### Mapping platform power registration to Windows App SDK
 
-| PowerSettingRegisterNotification parameter | Description                                                                                                                                               |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LPCGUID SettingGuid                        | A GUID that represents the specific power setting in which the app is interested.                                                                         |
-| DWORD Flags                                | This is either DEVICE_NOTIFY_SERVICE_HANDLE if the Recipient is a service, or DEVICE_NOTIFY_CALLBACK if the Recipient is a callback function.             |
-| HANDLE Recipient                           | A handle to the recipient of the notifications.                                                                                                           |
+| PowerSettingRegisterNotification parameter | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| LPCGUID SettingGuid                        | A GUID that represents the specific power setting in which the app is interested. |
+| DWORD Flags                                | This is either DEVICE_NOTIFY_SERVICE_HANDLE if the Recipient is a service, or DEVICE_NOTIFY_CALLBACK if the Recipient is a callback function. |
+| HANDLE Recipient                           | A handle to the recipient of the notifications.              |
 | PHPOWERNOTIFY RegistrationHandle           | Out parameter: a handle to the registration, which the app can later use to unregister for notifications, via the PowerSettingUnregisterNotification API. |
 
 Windows App SDK AppLifecycle will not bring this function forward in its current form. Instead, AppLifecycle
