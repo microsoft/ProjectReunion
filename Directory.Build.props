@@ -44,4 +44,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\build\override;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </Midl>
   </ItemDefinitionGroup>
+
+  <!-- Build with the hybrid CRT (Universal CRT + Static VS CRT (for what little the Universal CRT doesn't cover) -->
+  <Import Project="$(MSBuildThisFileDirectory)HybridCRT.props" />
 </Project>
