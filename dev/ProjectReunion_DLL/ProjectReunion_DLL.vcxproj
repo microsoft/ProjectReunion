@@ -111,6 +111,7 @@
     <Import Project="..\DynamicDependency\DynamicDependency.vcxitems" Label="Shared" />
     <Import Project="..\UndockedRegFreeWinRT\UndockedRegFreeWinRT.vcxitems" Label="Shared" />
     <Import Project="..\Common\Common.vcxitems" Label="Shared" />
+    <Import Project="..\PowerNotifications\PowerNotifications.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -169,7 +170,6 @@
     <LinkIncremental>false</LinkIncremental>
     <TargetName>Microsoft.ProjectReunion</TargetName>
   </PropertyGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
       <!-- We use MultiThreadedDebug, rather than MultiThreadedDebugDLL, to avoid DLL dependencies on VCRUNTIME140d.dll and MSVCP140d.dll. -->
@@ -198,7 +198,6 @@
       <AdditionalOptions>%(AdditionalOptions) /defaultlib:ucrt.lib</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(OutDir)..\DynamicDependency.DataStore.ProxyStub;$(SolutionDir)appmodel\identity;$(SolutionDir)common</AdditionalIncludeDirectories>

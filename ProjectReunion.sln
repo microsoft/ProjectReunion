@@ -159,10 +159,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PushNotificationTests", "te
 		{5B2D17FE-C371-417F-860C-3D32397C2404} = {5B2D17FE-C371-417F-860C-3D32397C2404}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PowerNotifications", "dev\PowerNotifications\PowerNotifications.vcxitems", "{3418759E-FB57-41A1-A485-9F7A363510E4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PowerNotifications", "test\PowerNotifications\PowerNotifications.vcxproj", "{CBD95746-61CE-4F31-B6CC-C5ABF1766180}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PowerNotifications", "PowerNotifications", "{067DB9CB-86B2-4DBB-A3EA-DB9D7078314C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		test\inc\inc.vcxitems*{0a5fee93-48b7-40ec-bb9a-b27d11060da9}*SharedItemsImports = 4
 		dev\PushNotifications\PushNotifications.vcxitems*{103c0c23-7ba8-4d44-a63c-83488e2e3a81}*SharedItemsImports = 9
+		dev\PowerNotifications\PowerNotifications.vcxitems*{3418759e-fb57-41a1-a485-9f7a363510e4}*SharedItemsImports = 9
 		dev\UndockedRegFreeWinRT\UndockedRegFreeWinRT.vcxitems*{56371ca6-144b-4989-a4e9-391ad4fa7651}*SharedItemsImports = 9
 		test\inc\inc.vcxitems*{56a1d696-feda-4333-bf37-772ebececb10}*SharedItemsImports = 4
 		test\inc\inc.vcxitems*{7c502995-59c3-483b-86ba-815985353633}*SharedItemsImports = 4
@@ -170,6 +177,7 @@ Global
 		test\inc\inc.vcxitems*{b567fe2e-3a03-48d0-b2b5-760cdec35891}*SharedItemsImports = 9
 		dev\Common\Common.vcxitems*{b73ad907-6164-4294-88fb-f3c9c10da1f1}*SharedItemsImports = 4
 		dev\DynamicDependency\DynamicDependency.vcxitems*{b73ad907-6164-4294-88fb-f3c9c10da1f1}*SharedItemsImports = 4
+		dev\PowerNotifications\PowerNotifications.vcxitems*{b73ad907-6164-4294-88fb-f3c9c10da1f1}*SharedItemsImports = 4
 		dev\UndockedRegFreeWinRT\UndockedRegFreeWinRT.vcxitems*{b73ad907-6164-4294-88fb-f3c9c10da1f1}*SharedItemsImports = 4
 		dev\DynamicDependency\DynamicDependency.vcxitems*{bf055a59-0919-4e34-9b76-dd055495cc5a}*SharedItemsImports = 9
 		test\inc\inc.vcxitems*{c62688a1-16a0-4729-b6ed-842f4faa29f3}*SharedItemsImports = 4
@@ -567,6 +575,18 @@ Global
 		{0A5FEE93-48B7-40EC-BB9A-B27D11060DA9}.Release|x64.Build.0 = Release|x64
 		{0A5FEE93-48B7-40EC-BB9A-B27D11060DA9}.Release|x86.ActiveCfg = Release|Win32
 		{0A5FEE93-48B7-40EC-BB9A-B27D11060DA9}.Release|x86.Build.0 = Release|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Debug|x64.ActiveCfg = Debug|x64
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Debug|x64.Build.0 = Debug|x64
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Debug|x86.ActiveCfg = Debug|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Debug|x86.Build.0 = Debug|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Release|Any CPU.ActiveCfg = Release|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Release|ARM64.ActiveCfg = Release|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Release|x64.ActiveCfg = Release|x64
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Release|x64.Build.0 = Release|x64
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Release|x86.ActiveCfg = Release|Win32
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -613,6 +633,9 @@ Global
 		{56A1D696-FEDA-4333-BF37-772EBECECB10} = {AC5FFC80-92FE-4933-BED2-EC5519AC4440}
 		{D012E4BB-F16B-472D-A26D-D449CEFA988E} = {AC5FFC80-92FE-4933-BED2-EC5519AC4440}
 		{0A5FEE93-48B7-40EC-BB9A-B27D11060DA9} = {8630F7AA-2969-4DC9-8700-9B468C1DC21D}
+		{3418759E-FB57-41A1-A485-9F7A363510E4} = {067DB9CB-86B2-4DBB-A3EA-DB9D7078314C}
+		{CBD95746-61CE-4F31-B6CC-C5ABF1766180} = {8630F7AA-2969-4DC9-8700-9B468C1DC21D}
+		{067DB9CB-86B2-4DBB-A3EA-DB9D7078314C} = {448ED2E5-0B37-4D97-9E6B-8C10A507976A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B3D7591-CFEC-4762-9A07-ABE99938FB77}

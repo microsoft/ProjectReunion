@@ -59,5 +59,11 @@
         <ActivatableClass ActivatableClassId="Microsoft.Windows.PushNotifications.PushNotificationManager" ThreadingModel="both" />
       </InProcessServer>
     </Extension>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>Microsoft.ProjectReunion.dll</Path
+        <ActivatableClass ActivatableClassId="Microsoft.Windows.System.Power" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
   </Extensions>
 </Package>

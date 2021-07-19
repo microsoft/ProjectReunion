@@ -1,0 +1,113 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+// REVIEW: We're not doing doing any versioning within IDL/WinMDs, right?
+
+namespace Microsoft.Windows.System.Power
+{
+    // Enums duplicated from IPowerManagerStatics
+    enum EnergySaverStatus
+    {
+        Uninitialized = 0,
+        Disabled,
+        Off,
+        On
+    };
+
+    enum BatteryStatus
+    {
+        NotPresent = 0,
+        Discharging,
+        Idle,
+        Charging
+    };
+
+    enum PowerSupplyStatus
+    {
+        NotPresent = 0,
+        Inadequate,
+        Adequate
+    };
+
+    // Enums based on on PowerSettingRegisterNotification's state
+    enum PowerSourceKind
+    {
+        AC = 0,
+        DC
+    };
+
+    enum DisplayStatus
+    {
+        Off = 0,
+        On,
+        Dimmed
+    };
+
+    enum EffectivePowerMode
+    {
+        // EFFECTIVE_POWER_MODE_V1 values
+        BatterySaver,
+        BetterBattery,
+        Balanced,
+        HighPerformance,
+        MaxPerformance,
+        // EFFECTIVE_POWER_MODE_V2 additional values
+        GameMode,
+        MixedReality
+    };
+
+    enum UserPresenceStatus
+    {
+        Present = 0,
+        Absent
+    };
+
+    enum SystemSuspendStatus
+    {
+        Uninitialized = 0,
+        Entering,
+        AutoResume,
+        ManualResume
+    };
+
+    static runtimeclass PowerManager
+    {
+        // Properties and events duplicated from IPowerManagerStatics.
+        static EnergySaverStatus EnergySaverStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> EnergySaverStatusChanged;
+
+        // TODO : Review API shape. We might want the BatteryStatusChanged event to
+        // be typed with BatteryStatus, and actually provide the BatteryStatus when
+        // the event is signaled. But for initial scaffolding, we have aligned with
+        // the existing IPowerManagerStatics implementation.
+        static BatteryStatus BatteryStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> BatteryStatusChanged;
+
+        static PowerSupplyStatus PowerSupplyStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> PowerSupplyStatusChanged;
+
+        static Int32 RemainingChargePercent{ get; };
+        static event Windows.Foundation.EventHandler<Object> RemainingChargePercentChanged;
+
+        static Windows.Foundation.TimeSpan RemainingDischargeTime{ get; };
+        static event Windows.Foundation.EventHandler<Object> RemainingDischargeTimeChanged;
+
+        // Properties and events based on PowerSettingRegisterNotification's state
+        static PowerSourceKind PowerSourceKind{ get; };
+        static event Windows.Foundation.EventHandler<Object> PowerSourceKindChanged;
+
+        static DisplayStatus DisplayStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> DisplayStatusChanged;
+
+        static event Windows.Foundation.EventHandler<Object> SystemIdleStatusChanged;
+
+        static Windows.Foundation.IAsyncOperation<EffectivePowerMode> EffectivePowerMode{ get; };
+        static event Windows.Foundation.EventHandler<Object> EffectivePowerModeChanged;
+
+        static UserPresenceStatus UserPresenceStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> UserPresenceStatusChanged;
+
+        static SystemSuspendStatus SystemSuspendStatus{ get; };
+        static event Windows.Foundation.EventHandler<Object> SystemSuspendStatusChanged;
+    };
+}

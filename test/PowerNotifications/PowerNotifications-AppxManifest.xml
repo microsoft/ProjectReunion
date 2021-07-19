@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap uap5 com rescap">
+
+  <Identity
+    Name="ProjectReunion.Test.PowerNotifications"
+    Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+    Version="4.1.1967.333" />
+
+  <Properties>
+    <DisplayName>ProjectReunion.Test.PowerNotifications for tests</DisplayName>
+    <PublisherDisplayName>Project Reunion</PublisherDisplayName>
+    <Logo>taef.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+    <PackageDependency Name="Microsoft.ProjectReunion.Framework" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" MinVersion="0.0.0.0"/>
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-US"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="Te.ProcessHost.uap.exe"
+      EntryPoint="ProcessHostApplication">
+      <uap:VisualElements
+        DisplayName="ProjectReunion.Test.PowerNotifications"
+        Square150x150Logo="taef.png"
+        Square44x44Logo="taef.png"
+        Description="ProjectReunion.Test.PowerNotifications Test App"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="taef.png"/>
+        <uap:SplashScreen Image="taef.png" uap5:Optional="true"/>
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="packageManagement" />
+    <rescap:Capability Name="packageQuery" />
+  </Capabilities>
+</Package>
