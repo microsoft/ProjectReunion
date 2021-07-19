@@ -4,6 +4,7 @@
 #include <sstream>
 #include <wil/win32_helpers.h>
 #include <winrt/Windows.ApplicationModel.Background.h> // we need this for BackgroundTask APIs
+#include "../../../dev/Common/AppModel.Identity.h"
 
 using namespace winrt;
 using namespace winrt::Microsoft::Windows::AppLifecycle;
@@ -18,6 +19,11 @@ winrt::guid remoteId1(L"a2e4a323-b518-4799-9e80-0b37aeb0d225"); // Generated fro
 winrt::guid remoteId2(L"CA1A4AB2-AC1D-4EFC-A132-E5A191CA285A"); // Dummy guid from visual studio guid tool generator
 
 PushNotificationRegistrationToken g_appToken = nullptr;
+const wchar_t* g_bootStrapDllName = L"Microsoft.WindowsAppSDK.Bootstrap.dll";
+
+typedef HRESULT(*BootStrapTestInit)(PCWSTR prefix, PCWSTR publisherId);
+typedef HRESULT(*BootStrapInit)(const UINT32 majorMinorVersion, PCWSTR versionTag, const PACKAGE_VERSION minVersion);
+typedef void (*BootStrapShutdown)();
 
 constexpr auto timeout{ std::chrono::seconds(300) };
 
@@ -256,6 +262,50 @@ bool BackgroundActivationTest() // Activating application for background test.
     return true;
 }
 
+bool NeedDynamicDependencies()
+{
+    return !AppModel::Identity::IsPackagedProcess();
+}
+
+HRESULT BootstrapInitialize()
+{
+    wil::unique_hmodule bootStrapDll(LoadLibraryEx(g_bootStrapDllName, NULL, 0));
+    RETURN_LAST_ERROR_IF_NULL(bootStrapDll);
+
+    BootStrapTestInit mddTestInitialize = reinterpret_cast<BootStrapTestInit>(GetProcAddress(bootStrapDll.get(), "MddBootstrapTestInitialize"));
+    RETURN_LAST_ERROR_IF_NULL(mddTestInitialize);
+
+    BootStrapInit mddInitialize = reinterpret_cast<BootStrapInit>(GetProcAddress(bootStrapDll.get(), "MddBootstrapInitialize"));
+    RETURN_LAST_ERROR_IF_NULL(mddInitialize);
+
+    constexpr PCWSTR c_PackageNamePrefix{ L"WindowsAppSDK.Test.DDLM" };
+    constexpr PCWSTR c_PackagePublisherId{ L"8wekyb3d8bbwe" };
+    RETURN_IF_FAILED(mddTestInitialize(c_PackageNamePrefix, c_PackagePublisherId));
+
+    // Major.Minor version, MinVersion=0 to find any framework package for this major.minor version
+    const UINT32 c_Version_MajorMinor{ 0x00040001 };
+    const PACKAGE_VERSION minVersion{};
+    RETURN_IF_FAILED(mddInitialize(c_Version_MajorMinor, nullptr, minVersion));
+
+    return S_OK;
+}
+
+void BootstrapShutdown()
+{
+    wil::unique_hmodule bootStrapDll(LoadLibraryEx(g_bootStrapDllName, NULL, 0));
+    if (!bootStrapDll)
+    {
+        return;
+    }
+
+    BootStrapShutdown mddShutdown = reinterpret_cast<BootStrapShutdown>(GetProcAddress(bootStrapDll.get(), "MddBootstrapShutdown"));
+    if (!mddShutdown)
+    {
+        return;
+    }
+    mddShutdown();
+}
+
 std::map<std::string, bool(*)()> const& GetSwitchMapping()
 {
     static std::map<std::string, bool(*)()> switchMapping = {
@@ -287,6 +337,18 @@ bool runUnitTest(std::string unitTest)
     return it->second();
 }
 
+std::string unitTestNameFromLaunchArguments(const ILaunchActivatedEventArgs& launchArgs)
+{
+    std::string unitTestName = to_string(launchArgs.Arguments());
+    auto argStart = unitTestName.rfind(" ");
+    if (argStart != std::wstring::npos)
+    {
+        unitTestName = unitTestName.substr(argStart + 1);
+    }
+
+    return unitTestName;
+}
+
 int main() try
 {
     bool testResult = false;
@@ -295,7 +357,22 @@ int main() try
         {
             PushNotificationManager::UnregisterActivator(g_appToken, PushNotificationRegistrationOptions::PushTrigger | PushNotificationRegistrationOptions::ComActivator);
         }
+
+        if (NeedDynamicDependencies())
+        {
+            BootstrapShutdown();
+        }
     });
+
+    if (NeedDynamicDependencies())
+    {
+        auto result = BootstrapInitialize();
+        if (result != S_OK)
+        {
+            std::cout << "Dynamic Dependencies failed to initialize." << std::endl;
+            return result;
+        }
+    }
 
     PushNotificationActivationInfo info(
         PushNotificationRegistrationOptions::PushTrigger | PushNotificationRegistrationOptions::ComActivator,
@@ -308,8 +385,7 @@ int main() try
 
     if (kind == ExtendedActivationKind::Launch)
     {
-        auto launchArgs = args.Data().as<ILaunchActivatedEventArgs>();
-        std::string unitTest = to_string(launchArgs.Arguments());
+        auto unitTest = unitTestNameFromLaunchArguments(args.Data().as<ILaunchActivatedEventArgs>());
         std::cout << unitTest << std::endl;
 
         testResult = runUnitTest(unitTest);

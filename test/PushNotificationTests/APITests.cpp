@@ -58,6 +58,7 @@ namespace Test::PushNotifications
             try
             {
                 TP::AddPackage_WindowsAppSDKFramework(); // Installs WASfwk
+                TP::AddPackage_DynamicDependencyLifetimeManager(); // Required when running the test app unpackaged.
                 TP::AddPackage_PushNotificationsLongRunningTask(); // Installs the PushNotifications long running task.
                 TP::WapProj::AddPackage(TAEF::GetDeploymentDir(), GetTestPackageFile(), L".msix"); // Installs PushNotificationsTestApp.msix
             }
@@ -74,9 +75,11 @@ namespace Test::PushNotifications
         {
             try
             {
-                TP::RemovePackage_WindowsAppSDKFramework();
-                TP::RemovePackage_PushNotificationsLongRunningTask();
+                // Remove in reverse order to avoid conflict between inter-dependent packages.
                 TP::RemovePackage(GetTestPackageFullName());
+                TP::RemovePackage_PushNotificationsLongRunningTask();
+                TP::RemovePackage_DynamicDependencyLifetimeManager();
+                TP::RemovePackage_WindowsAppSDKFramework();
             }
             catch (...)
             {
@@ -88,6 +91,7 @@ namespace Test::PushNotifications
         TEST_METHOD_SETUP(MethodInit)
         {
             VERIFY_IS_TRUE(TP::IsPackageRegistered_WindowsAppSDKFramework());
+            VERIFY_IS_TRUE(TP::IsPackageRegistered_DynamicDependencyLifetimeManager());
             VERIFY_IS_TRUE(TP::IsPackageRegistered_PushNotificationsLongRunningTask());
             return true;
         }
@@ -95,12 +99,33 @@ namespace Test::PushNotifications
         TEST_METHOD_CLEANUP(MethodUninit)
         {
             VERIFY_IS_TRUE(TP::IsPackageRegistered_WindowsAppSDKFramework());
+            VERIFY_IS_TRUE(TP::IsPackageRegistered_DynamicDependencyLifetimeManager());
             VERIFY_IS_TRUE(TP::IsPackageRegistered_PushNotificationsLongRunningTask());
 
             m_processHandle.reset();
             return true;
         }
 
+    	wil::unique_handle RunUnpackaged(const std::wstring& command, const std::wstring& args, const std::wstring& directory)
+    	{
+        	SHELLEXECUTEINFO ei{};
+        	ei.cbSize = sizeof(SHELLEXECUTEINFO);
+        	ei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_DOENVSUBST;
+        	ei.lpFile = command.c_str();
+        	ei.lpParameters = args.c_str();
+        	ei.lpDirectory = directory.c_str();
+        	ei.nShow = SW_NORMAL;
+
+        	if (!ShellExecuteEx(&ei))
+        	{
+            	auto lastError = GetLastError();
+            	VERIFY_WIN32_SUCCEEDED(lastError);
+        	}
+
+        	wil::unique_handle process{ ei.hProcess };
+        	return process;
+    	}
+		
         void RunTest(const PCWSTR& testName, const int& waitTime)
         {
             DWORD processId {};
@@ -113,6 +138,26 @@ namespace Test::PushNotifications
 
             DWORD exitCode {};
             VERIFY_WIN32_BOOL_SUCCEEDED(GetExitCodeProcess(m_processHandle.get(), &exitCode));
+            VERIFY_ARE_EQUAL(exitCode, 0);
+        }
+
+        const std::wstring GetDeploymentDir()
+        {
+            WEX::Common::String deploymentDir;
+            WEX::TestExecution::RuntimeParameters::TryGetValue(L"TestDeploymentDir", deploymentDir);
+            deploymentDir.Append(L"..\\PushNotificationsTestApp");
+            return reinterpret_cast<PCWSTR>(deploymentDir.GetBuffer());
+        }
+
+        void RunTestUnpackaged(const PCWSTR& testName, const int& waitTime)
+        {
+            auto processHandle = RunUnpackaged(L"PushNotificationsTestApp.exe", testName, GetDeploymentDir());
+            VERIFY_IS_TRUE(processHandle.is_valid());
+
+            VERIFY_IS_TRUE(wil::handle_wait(processHandle.get(), channelTestWaitTime()));
+
+            DWORD exitCode{};
+            VERIFY_WIN32_BOOL_SUCCEEDED(GetExitCodeProcess(processHandle.get(), &exitCode));
             VERIFY_ARE_EQUAL(exitCode, 0);
         }
 
