@@ -9,3 +9,5 @@
 #include <winrt/Microsoft.UI.Xaml.Data.h>
 #include <winrt/Microsoft.UI.Xaml.Markup.h>
 #include <winrt/Microsoft.UI.Xaml.Navigation.h>
+#include <winrt/Microsoft.UI.Dispatching.h>
+#include <microsoft.ui.dispatching.co_await.h>
