@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: Question
-    url: https://github.com/microsoft/ProjectReunion/discussions/new?category=q-a
+    url: https://github.com/microsoft/WindowsAppSDK/discussions/new?category=q-a
     about: Ask a question
   - name: Discussion
-    url: https://github.com/microsoft/ProjectReunion/discussions/new?category=general
+    url: https://github.com/microsoft/WindowsAppSDK/discussions/new?category=general
     about: Start a discussion

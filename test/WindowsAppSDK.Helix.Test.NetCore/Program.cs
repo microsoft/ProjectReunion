@@ -1,6 +1,6 @@
 using System;
 
-namespace WinUI.HelixDemo.App
+namespace WindowsAppSDK.Helix.Test.App
 {
     // This app justs exists as a convenient way to output the .net 5 runtime binaries to BuildOutput
     class Program

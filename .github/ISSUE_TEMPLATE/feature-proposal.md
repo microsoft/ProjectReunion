@@ -19,12 +19,12 @@ It's fine if you don't have all the details: you can start with the Summary and 
 <!-- Include 1-2 sentences summarizing your feature or API proposal -->
 
 ## Rationale
-<!-- Create a list that describes WHY the feature should be added to Project Reunion for all 
+<!-- Create a list that describes WHY the feature should be added to the Windows App SDK for all 
 developers and users. Proposals often have multiple motives for why we should do the work, 
 so list each one as a separate bullet.
-If applicable you can also describe how the proposal aligns to the current Project Reunion roadmap
+If applicable you can also describe how the proposal aligns to the current Windows App SDK roadmap
 and priorities in a separate paragraph:
-https://github.com/Microsoft/ProjectReunion/blob/master/docs/roadmap.md
+https://github.com/Microsoft/WindowsAppSDK/blob/master/docs/roadmap.md
 -->
 * {First reason for why we should consider this proposal}
 * {Second reason for why we should consider this proposal}
@@ -63,4 +63,4 @@ This could include one or more of:
 
 ## Open Questions
 <!-- Please list any open issues that you think still need to be addressed.
-These could include areas you think would benefit from community or Project Reunion team input -->
+These could include areas you think would benefit from community or Windows App SDK team input -->

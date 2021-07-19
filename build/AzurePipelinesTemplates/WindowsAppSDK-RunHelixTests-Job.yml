@@ -29,7 +29,7 @@ jobs:
     winUIHelixPipelineScripts: build\Helix\packages\Microsoft.Internal.WinUI.Helix.$(winUIHelixVer)\scripts\pipeline
 
     # The target queues to run the tests on.
-    # Currently runs on queues owned by the WinUI/XAML team. This should run on queues hosted by ProjectReunion in the future.
+    # Currently runs on queues owned by the WinUI/XAML team. This should run on queues hosted by WindowsAppSDK in the future.
     # Note: %3b is the escape sequence for ';' which is used as the delimiter
     helixTargetQueuesOpen: 'Windows.10.Amd64.ClientRS5.Open.Xaml%3bWindows.10.Amd64.Client19h1.Open.Xaml'
     helixTargetQueuesClosed: 'Windows.10.Amd64.ClientRS5.Xaml%3bWindows.10.Amd64.Client19h1.Xaml'

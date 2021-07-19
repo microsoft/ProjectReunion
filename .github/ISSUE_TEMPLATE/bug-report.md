@@ -24,10 +24,10 @@ Steps to reproduce the behavior:
 <!-- If applicable, add screenshots here to help explain your problem -->
 
 **Version Info**
-<!-- Please enter your Project-Reunion NuGet package version and OS version(s) -->
+<!-- Please enter your WindowsAppSDK NuGet package version and OS version(s) -->
 
 NuGet package version: 
-<!-- Example: [Microsoft.ProjectReunion 0.1.0-prerelease2] -->
+<!-- Example: [Microsoft.WindowsAppSDK 0.1.0-prerelease2] -->
 
 <!-- Which Windows versions did you see the issue on? Leave blank if you didn't try that version. -->
 | Windows 10 version                  | Saw the problem? |
