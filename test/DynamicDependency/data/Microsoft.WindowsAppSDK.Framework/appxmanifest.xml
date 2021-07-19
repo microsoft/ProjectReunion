@@ -56,12 +56,12 @@
     <Extension Category="windows.activatableClass.inProcessServer">
       <InProcessServer>
         <Path>Microsoft.WindowsAppSDK.dll</Path>
-        <ActivatableClass ActivatableClassId="Microsoft.Windows.PushNotifications.PushNotificationChannel" ThreadingModel="both" />
-        <ActivatableClass ActivatableClassId="Microsoft.Windows.PushNotifications.PushNotificationCreateChannelResult" ThreadingModel="both" />
-        <ActivatableClass ActivatableClassId="Microsoft.Windows.PushNotifications.PushNotificationActivationInfo" ThreadingModel="both" />
-        <ActivatableClass ActivatableClassId="Microsoft.Windows.PushNotifications.PushNotificationReceivedEventArgs" ThreadingModel="both" />
-        <ActivatableClass ActivatableClassId="Microsoft.Windows.PushNotifications.PushNotificationRegistrationToken" ThreadingModel="both" />
-        <ActivatableClass ActivatableClassId="Microsoft.Windows.PushNotifications.PushNotificationManager" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="Microsoft.WindowsApp.PushNotifications.PushNotificationChannel" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="Microsoft.WindowsApp.PushNotifications.PushNotificationCreateChannelResult" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="Microsoft.WindowsApp.PushNotifications.PushNotificationActivationInfo" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="Microsoft.WindowsApp.PushNotifications.PushNotificationReceivedEventArgs" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="Microsoft.WindowsApp.PushNotifications.PushNotificationRegistrationToken" ThreadingModel="both" />
+        <ActivatableClass ActivatableClassId="Microsoft.WindowsApp.PushNotifications.PushNotificationManager" ThreadingModel="both" />
       </InProcessServer>
     </Extension>
   </Extensions>

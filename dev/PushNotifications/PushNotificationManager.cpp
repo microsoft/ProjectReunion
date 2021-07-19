@@ -4,7 +4,7 @@
 #include "pch.h"
 
 #include "PushNotificationManager.h"
-#include "Microsoft.Windows.PushNotifications.PushNotificationManager.g.cpp"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationManager.g.cpp"
 
 #include "PushNotificationCreateChannelResult.h"
 #include "PushNotifications-Constants.h"
@@ -37,7 +37,7 @@ namespace winrt
     using namespace Windows::Foundation;
 }
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     inline constexpr auto c_maxBackoff{ 5min };
     inline constexpr auto c_initialBackoff{ 60s };
@@ -63,7 +63,7 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
         }
     }
 
-    winrt::IAsyncOperationWithProgress<winrt::Microsoft::Windows::PushNotifications::PushNotificationCreateChannelResult, winrt::Microsoft::Windows::PushNotifications::PushNotificationCreateChannelStatus> PushNotificationManager::CreateChannelAsync(const winrt::guid &remoteId)
+    winrt::IAsyncOperationWithProgress<winrt::Microsoft::WindowsApp::PushNotifications::PushNotificationCreateChannelResult, winrt::Microsoft::WindowsApp::PushNotifications::PushNotificationCreateChannelStatus> PushNotificationManager::CreateChannelAsync(const winrt::guid &remoteId)
     {
         THROW_HR_IF(E_INVALIDARG, (remoteId == winrt::guid()));
 

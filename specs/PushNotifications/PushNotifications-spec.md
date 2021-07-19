@@ -334,7 +334,7 @@ For MSIX, the COM activator GUID and the exe path need to be registered in the m
 # API Details
 ```c# (but really MIDL3)
 
-namespace Microsoft.Windows.PushNotifications
+namespace Microsoft.WindowsApp.PushNotifications
 {
     // Event args for the Push payload.
     runtimeclass PushNotificationReceivedEventArgs

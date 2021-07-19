@@ -2,24 +2,24 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #pragma once
-#include "Microsoft.Windows.PushNotifications.PushNotificationCreateChannelResult.g.h"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationCreateChannelResult.g.h"
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     struct PushNotificationCreateChannelResult : PushNotificationCreateChannelResultT<PushNotificationCreateChannelResult>
     {
-        PushNotificationCreateChannelResult(Microsoft::Windows::PushNotifications::PushNotificationChannel const& channel, hresult const& extendedError, Microsoft::Windows::PushNotifications::PushNotificationChannelStatus const& status);
-        Microsoft::Windows::PushNotifications::PushNotificationChannel Channel();
+        PushNotificationCreateChannelResult(Microsoft::WindowsApp::PushNotifications::PushNotificationChannel const& channel, hresult const& extendedError, Microsoft::WindowsApp::PushNotifications::PushNotificationChannelStatus const& status);
+        Microsoft::WindowsApp::PushNotifications::PushNotificationChannel Channel();
         winrt::hresult ExtendedError();
-        Microsoft::Windows::PushNotifications::PushNotificationChannelStatus Status();
+        Microsoft::WindowsApp::PushNotifications::PushNotificationChannelStatus Status();
 
     private:
-        const Microsoft::Windows::PushNotifications::PushNotificationChannel m_channel{ nullptr };
+        const Microsoft::WindowsApp::PushNotifications::PushNotificationChannel m_channel{ nullptr };
         const winrt::hresult m_extendedError;
-        const Microsoft::Windows::PushNotifications::PushNotificationChannelStatus m_status;
+        const Microsoft::WindowsApp::PushNotifications::PushNotificationChannelStatus m_status;
     };
 }
-namespace winrt::Microsoft::Windows::PushNotifications::factory_implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::factory_implementation
 {
     struct PushNotificationCreateChannelResult : PushNotificationCreateChannelResultT<PushNotificationCreateChannelResult, implementation::PushNotificationCreateChannelResult>
     {

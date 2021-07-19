@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doc>
   <assembly>
-    <name>Microsoft.Windows.PushNotifications</name>
+    <name>Microsoft.WindowsApp.PushNotifications</name>
   </assembly>
   <members>
   </members>

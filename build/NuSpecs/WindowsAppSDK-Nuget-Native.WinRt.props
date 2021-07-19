@@ -20,8 +20,8 @@
       <Implementation Condition="'$(WindowsAppSDKFrameworkPackage)' != 'true'">$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(_WindowsAppSDKFoundationPlatform)\native\Microsoft.WindowsAppSDK.dll</Implementation>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
-    <Reference Include="Microsoft.Windows.PushNotifications.winmd">
-      <HintPath>$(MSBuildThisFileDirectory)..\..\lib\uap10.0\Microsoft.Windows.PushNotifications.winmd</HintPath>
+    <Reference Include="Microsoft.WindowsApp.PushNotifications.winmd">
+      <HintPath>$(MSBuildThisFileDirectory)..\..\lib\uap10.0\Microsoft.WindowsApp.PushNotifications.winmd</HintPath>
       <Implementation Condition="'$(WindowsAppSDKFrameworkPackage)' != 'true'">$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(_WindowsAppSDKFoundationPlatform)\native\Microsoft.WindowsAppSDK.dll</Implementation>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>

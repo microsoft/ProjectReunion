@@ -16,4 +16,4 @@
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Storage.Streams.h>
 #include <winrt/Microsoft.Windows.AppLifecycle.h>
-#include <winrt/Microsoft.Windows.PushNotifications.h>
+#include <winrt/Microsoft.WindowsApp.PushNotifications.h>

@@ -25,7 +25,7 @@ namespace winrt::Microsoft::Windows::AppLifecycle::implementation
         { ExtendedActivationKind::File, c_fileContractId, &FileActivatedEventArgs::Deserialize },
         { ExtendedActivationKind::Protocol, c_protocolContractId, &ProtocolActivatedEventArgs::Deserialize },
         { ExtendedActivationKind::StartupTask, c_startupTaskContractId, &StartupActivatedEventArgs::Deserialize },
-        { ExtendedActivationKind::Push, c_pushContractId, &winrt::Microsoft::Windows::PushNotifications::Deserialize },
+        { ExtendedActivationKind::Push, c_pushContractId, &winrt::Microsoft::WindowsApp::PushNotifications::Deserialize },
     };
 
     inline bool IsEncodedLaunch(winrt::Windows::Foundation::Uri const& uri)

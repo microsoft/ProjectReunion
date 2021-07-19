@@ -3,17 +3,17 @@
 
 #include "pch.h"
 #include "PushNotificationActivationInfo.h"
-#include "Microsoft.Windows.PushNotifications.PushNotificationActivationInfo.g.cpp"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationActivationInfo.g.cpp"
 
 #include <Windows.ApplicationModel.background.h>
 
 namespace winrt
 {
-    using namespace Microsoft::Windows::PushNotifications;
+    using namespace Microsoft::WindowsApp::PushNotifications;
     using namespace Windows::ApplicationModel::Background;
 }
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     PushNotificationActivationInfo::PushNotificationActivationInfo(winrt::PushNotificationRegistrationOptions const& options, winrt::guid const& taskClsid) : m_options(options), m_taskClsid(taskClsid) {}
 

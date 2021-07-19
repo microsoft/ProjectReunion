@@ -2,26 +2,26 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #pragma once
-#include "Microsoft.Windows.PushNotifications.PushNotificationActivationInfo.g.h"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationActivationInfo.g.h"
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     struct PushNotificationActivationInfo : PushNotificationActivationInfoT<PushNotificationActivationInfo>
     {
-        PushNotificationActivationInfo(Microsoft::Windows::PushNotifications::PushNotificationRegistrationOptions const& option, winrt::guid const& taskClsid);
+        PushNotificationActivationInfo(Microsoft::WindowsApp::PushNotifications::PushNotificationRegistrationOptions const& option, winrt::guid const& taskClsid);
         winrt::guid TaskClsid();
-        Microsoft::Windows::PushNotifications::PushNotificationRegistrationOptions Options();
+        Microsoft::WindowsApp::PushNotifications::PushNotificationRegistrationOptions Options();
         winrt::com_array<winrt::Windows::ApplicationModel::Background::IBackgroundCondition> GetConditions();
         void SetConditions(array_view<winrt::Windows::ApplicationModel::Background::IBackgroundCondition const> conditions);
 
     private:
-        const Microsoft::Windows::PushNotifications::PushNotificationRegistrationOptions m_options;
+        const Microsoft::WindowsApp::PushNotifications::PushNotificationRegistrationOptions m_options;
         const winrt::guid m_taskClsid;
         winrt::com_array<winrt::Windows::ApplicationModel::Background::IBackgroundCondition> m_backgroundConditions{};
         wil::srwlock m_lock;
     };
 }
-namespace winrt::Microsoft::Windows::PushNotifications::factory_implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::factory_implementation
 {
     struct PushNotificationActivationInfo : PushNotificationActivationInfoT<PushNotificationActivationInfo, implementation::PushNotificationActivationInfo>
     {

@@ -45,8 +45,8 @@
       <IsWinMDFile>true</IsWinMDFile>
       <Implementation>$(OutDir)\..\WindowsAppSDK_DLL\Microsoft.WindowsAppSDK.dll</Implementation>
     </Reference>
-    <Reference Include="Microsoft.Windows.PushNotifications">
-      <HintPath>$(OutDir)\..\WindowsAppSDK_DLL\Microsoft.Windows.PushNotifications.winmd</HintPath>
+    <Reference Include="Microsoft.WindowsApp.PushNotifications">
+      <HintPath>$(OutDir)\..\WindowsAppSDK_DLL\Microsoft.WindowsApp.PushNotifications.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
       <Implementation>$(OutDir)\..\WindowsAppSDK_DLL\Microsoft.WindowsAppSDK.dll</Implementation>
     </Reference>

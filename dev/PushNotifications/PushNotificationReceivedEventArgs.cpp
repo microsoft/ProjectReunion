@@ -8,7 +8,7 @@
 #include <winrt/Windows.Networking.PushNotifications.h>
 
 #include "PushNotificationReceivedEventArgs.h"
-#include "Microsoft.Windows.PushNotifications.PushNotificationReceivedEventArgs.g.cpp"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationReceivedEventArgs.g.cpp"
 #include <iostream>
 #include <externs.h>
 #include "ValueMarshaling.h"
@@ -21,7 +21,7 @@ namespace winrt
     using namespace Windows::Networking::PushNotifications;
 }
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     PushNotificationReceivedEventArgs::PushNotificationReceivedEventArgs(winrt::IBackgroundTaskInstance const& backgroundTask): m_backgroundTaskInstance(backgroundTask), m_rawNotification(backgroundTask.TriggerDetails().as<RawNotification>().ContentBytes()) {}
 

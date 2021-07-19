@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #pragma once
-#include "Microsoft.Windows.PushNotifications.PushNotificationRegistrationToken.g.h"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationRegistrationToken.g.h"
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     struct PushNotificationRegistrationToken : PushNotificationRegistrationTokenT<PushNotificationRegistrationToken>
     {
@@ -17,7 +17,7 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
         const winrt::Windows::ApplicationModel::Background::IBackgroundTaskRegistration m_taskRegistration;
     };
 }
-namespace winrt::Microsoft::Windows::PushNotifications::factory_implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::factory_implementation
 {
     struct PushNotificationRegistrationToken : PushNotificationRegistrationTokenT<PushNotificationRegistrationToken, implementation::PushNotificationRegistrationToken>
     {

@@ -6,7 +6,7 @@
 #include <winrt/Windows.ApplicationModel.Background.h>
 
 using namespace winrt::Microsoft::Windows::AppLifecycle;
-using namespace winrt::Microsoft::Windows::PushNotifications;
+using namespace winrt::Microsoft::WindowsApp::PushNotifications;
 using namespace winrt::Windows::ApplicationModel::Activation;
 using namespace winrt::Windows::ApplicationModel::Background; // BackgroundTask APIs
 using namespace winrt::Windows::Foundation;
@@ -74,7 +74,7 @@ winrt::Windows::Foundation::IAsyncOperation<PushNotificationChannel> RequestChan
 
 };
 
-winrt::Microsoft::Windows::PushNotifications::PushNotificationChannel RequestChannel()
+winrt::Microsoft::WindowsApp::PushNotifications::PushNotificationChannel RequestChannel()
 {
     auto task = RequestChannelAsync();
     if (task.wait_for(std::chrono::seconds(300)) != AsyncStatus::Completed)

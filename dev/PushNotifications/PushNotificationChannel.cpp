@@ -3,7 +3,7 @@
 
 #include "pch.h"
 #include "PushNotificationChannel.h"
-#include "Microsoft.Windows.PushNotifications.PushNotificationChannel.g.cpp"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationChannel.g.cpp"
 #include <winrt\Windows.Networking.PushNotifications.h>
 #include <winrt\Windows.Foundation.h>
 #include "PushNotificationReceivedEventArgs.h"
@@ -15,10 +15,10 @@ namespace winrt::Windows
 }
 namespace winrt::Microsoft
 {
-    using namespace winrt::Microsoft::Windows::PushNotifications;
+    using namespace winrt::Microsoft::WindowsApp::PushNotifications;
 }
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     PushNotificationChannel::PushNotificationChannel(winrt::Windows::PushNotificationChannel const& channel): m_channel(channel) {}
 
@@ -46,14 +46,14 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
         }
     }
 
-    winrt::event_token PushNotificationChannel::PushReceived(winrt::Windows::TypedEventHandler<winrt::Microsoft::Windows::PushNotifications::PushNotificationChannel, winrt::Microsoft::Windows::PushNotifications::PushNotificationReceivedEventArgs> handler)
+    winrt::event_token PushNotificationChannel::PushReceived(winrt::Windows::TypedEventHandler<winrt::Microsoft::WindowsApp::PushNotifications::PushNotificationChannel, winrt::Microsoft::WindowsApp::PushNotifications::PushNotificationReceivedEventArgs> handler)
     {
         return m_channel.PushNotificationReceived([weak_self = get_weak(), handler](auto&&, auto&& args)
         {
             auto strong = weak_self.get();
             if (strong)
             {
-                handler(*strong, winrt::make<winrt::Microsoft::Windows::PushNotifications::implementation::PushNotificationReceivedEventArgs>(args));
+                handler(*strong, winrt::make<winrt::Microsoft::WindowsApp::PushNotifications::implementation::PushNotificationReceivedEventArgs>(args));
             };
         });
     }

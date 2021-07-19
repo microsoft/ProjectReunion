@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Microsoft.Windows.PushNotifications.PushNotificationReceivedEventArgs.g.h"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationReceivedEventArgs.g.h"
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     struct PushNotificationReceivedEventArgs : PushNotificationReceivedEventArgsT<PushNotificationReceivedEventArgs>
     {

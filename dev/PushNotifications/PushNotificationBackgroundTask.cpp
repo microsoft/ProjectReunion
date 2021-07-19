@@ -16,14 +16,14 @@
 namespace winrt
 {
     using namespace Windows::ApplicationModel::Background;
-    using namespace Microsoft::Windows::PushNotifications;
+    using namespace Microsoft::WindowsApp::PushNotifications;
     using namespace Windows::ApplicationModel::Core;
 }
 
 void PushNotificationBackgroundTask::Run(winrt::IBackgroundTaskInstance const& taskInstance)
 {
     auto appProperties = winrt::CoreApplication::Properties();
-    winrt::PushNotificationReceivedEventArgs activatedEventArgs = winrt::make<winrt::Microsoft::Windows::PushNotifications::implementation::PushNotificationReceivedEventArgs>(taskInstance);
+    winrt::PushNotificationReceivedEventArgs activatedEventArgs = winrt::make<winrt::Microsoft::WindowsApp::PushNotifications::implementation::PushNotificationReceivedEventArgs>(taskInstance);
     appProperties.Insert(ACTIVATED_EVENT_ARGS_KEY, activatedEventArgs);
 
     SetEvent(GetWaitHandleForArgs().get());

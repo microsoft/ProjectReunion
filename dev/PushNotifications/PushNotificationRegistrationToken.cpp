@@ -3,11 +3,11 @@
 
 #include "pch.h"
 #include "PushNotificationRegistrationToken.h"
-#include "Microsoft.Windows.PushNotifications.PushNotificationRegistrationToken.g.cpp"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationRegistrationToken.g.cpp"
 
 #include <Windows.ApplicationModel.background.h>
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     PushNotificationRegistrationToken::PushNotificationRegistrationToken(uint32_t const& cookie, winrt::Windows::ApplicationModel::Background::IBackgroundTaskRegistration const& taskRegistration): m_cookie(cookie), m_taskRegistration(taskRegistration) { }
 

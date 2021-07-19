@@ -2,24 +2,24 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #pragma once
-#include "Microsoft.Windows.PushNotifications.PushNotificationManager.g.h"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationManager.g.h"
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     struct PushNotificationManager
     {
         PushNotificationManager() = delete;
 
-        static Microsoft::Windows::PushNotifications::PushNotificationRegistrationToken RegisterActivator(Microsoft::Windows::PushNotifications::PushNotificationActivationInfo const& details);
-        static void UnregisterActivator(Microsoft::Windows::PushNotifications::PushNotificationRegistrationToken const& token, Microsoft::Windows::PushNotifications::PushNotificationRegistrationOptions const& options);
+        static Microsoft::WindowsApp::PushNotifications::PushNotificationRegistrationToken RegisterActivator(Microsoft::WindowsApp::PushNotifications::PushNotificationActivationInfo const& details);
+        static void UnregisterActivator(Microsoft::WindowsApp::PushNotifications::PushNotificationRegistrationToken const& token, Microsoft::WindowsApp::PushNotifications::PushNotificationRegistrationOptions const& options);
 
-        static winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Microsoft::Windows::PushNotifications::PushNotificationCreateChannelResult, winrt::Microsoft::Windows::PushNotifications::PushNotificationCreateChannelStatus> CreateChannelAsync(const winrt::guid &remoteId);
+        static winrt::Windows::Foundation::IAsyncOperationWithProgress<winrt::Microsoft::WindowsApp::PushNotifications::PushNotificationCreateChannelResult, winrt::Microsoft::WindowsApp::PushNotifications::PushNotificationCreateChannelStatus> CreateChannelAsync(const winrt::guid &remoteId);
 
     private:
         static bool IsChannelRequestRetryable(const winrt::hresult& hrException);
     };
 }
-namespace winrt::Microsoft::Windows::PushNotifications::factory_implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::factory_implementation
 {
     struct PushNotificationManager : PushNotificationManagerT<PushNotificationManager, implementation::PushNotificationManager>
     {

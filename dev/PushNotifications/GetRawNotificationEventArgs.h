@@ -8,7 +8,7 @@
 
 constexpr PCWSTR c_pushContractId = L"Windows.Push";
 
-namespace winrt::Microsoft::Windows::PushNotifications
+namespace winrt::Microsoft::WindowsApp::PushNotifications
 {
     static winrt::Windows::Foundation::IInspectable Deserialize(winrt::Windows::Foundation::Uri const&)
     {

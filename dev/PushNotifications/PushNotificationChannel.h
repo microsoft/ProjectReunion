@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #pragma once
-#include "Microsoft.Windows.PushNotifications.PushNotificationChannel.g.h"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationChannel.g.h"
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     struct PushNotificationChannel : PushNotificationChannelT<PushNotificationChannel>
     {
@@ -13,7 +13,7 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
         winrt::Windows::Foundation::DateTime ExpirationTime();
         void Close();
 
-        winrt::event_token PushReceived(winrt::Windows::Foundation::TypedEventHandler<Microsoft::Windows::PushNotifications::PushNotificationChannel, Microsoft::Windows::PushNotifications::PushNotificationReceivedEventArgs> handler);
+        winrt::event_token PushReceived(winrt::Windows::Foundation::TypedEventHandler<Microsoft::WindowsApp::PushNotifications::PushNotificationChannel, Microsoft::WindowsApp::PushNotifications::PushNotificationReceivedEventArgs> handler);
         void PushReceived(winrt::event_token const& token) noexcept;
 
     private:
@@ -21,7 +21,7 @@ namespace winrt::Microsoft::Windows::PushNotifications::implementation
 
     };
 }
-namespace winrt::Microsoft::Windows::PushNotifications::factory_implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::factory_implementation
 {
     struct PushNotificationChannel : PushNotificationChannelT<PushNotificationChannel, implementation::PushNotificationChannel>
     {

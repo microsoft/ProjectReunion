@@ -3,9 +3,9 @@
 
 #include "pch.h"
 #include "PushNotificationCreateChannelResult.h"
-#include "Microsoft.Windows.PushNotifications.PushNotificationCreateChannelResult.g.cpp"
+#include "Microsoft.WindowsApp.PushNotifications.PushNotificationCreateChannelResult.g.cpp"
 
-namespace winrt::Microsoft::Windows::PushNotifications::implementation
+namespace winrt::Microsoft::WindowsApp::PushNotifications::implementation
 {
     PushNotificationCreateChannelResult::PushNotificationCreateChannelResult(PushNotificationChannel const& channel, winrt::hresult const& extendedError, PushNotificationChannelStatus const& status):
         m_channel(channel),
